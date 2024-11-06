@@ -53,7 +53,7 @@ public class DriverInstallerThread implements Runnable {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    System.out.println(line);  // Imprime la salida (incluye errores)
+                    this.manager.setPrintText(line);  // Imprime la salida (incluye errores)
                 }
             }
             

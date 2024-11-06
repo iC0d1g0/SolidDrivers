@@ -4,6 +4,7 @@
  */
 package com.solidtype.soliddrivers.logicaI_instalador;
 
+import java.awt.TextArea;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,13 +21,14 @@ public class DriversManager {
     
     
     private static final int DRIVERS_INSTALLERS =3;
-
+    private TextArea console;
     private Queue<Drivers> cola = new LinkedList<>();
     private final String folderName;
     Object lock = new Object();
     private Thread[] installers;
     
-    public DriversManager(String folderName){
+    public DriversManager(String folderName, TextArea console){
+        this.console = console;
         installers = new Thread[DRIVERS_INSTALLERS];
         for(int i= 0; i<DRIVERS_INSTALLERS; i++){
             installers[i] = new Thread(new DriverInstallerThread(this, "Installer"+(i+1)));
@@ -42,7 +44,9 @@ public class DriversManager {
         }
        
     }
-    
+    public void setPrintText(String texto){
+         this.console.append( texto + "\n");
+    }
     public void agregarDrivers(Drivers driver){
         synchronized(lock){
             cola.offer(driver);

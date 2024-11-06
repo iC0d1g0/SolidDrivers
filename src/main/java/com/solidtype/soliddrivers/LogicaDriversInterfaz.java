@@ -1,6 +1,7 @@
 
 package com.solidtype.soliddrivers;
 
+import java.awt.TextArea;
 import java.awt.TextField;
 import java.io.File;
 import java.util.HashMap;
@@ -14,12 +15,16 @@ import javax.swing.JProgressBar;
  */
 public class LogicaDriversInterfaz implements LogicaDrivers {
     
-    private Funciones_windows helper = new Funciones_windows();
+    private Funciones_windows helper ;
     private InfoEntity thisPC;
     private JProgressBar progress;
-    public LogicaDriversInterfaz(JProgressBar progress){
+    private TextArea console;
+    
+    public LogicaDriversInterfaz(JProgressBar progress, TextArea console){
         this.thisPC = getInfo();
         this.progress = progress;
+        this.console = console;
+        helper = new Funciones_windows(progress,console);
     }
 
     @Override
@@ -42,7 +47,7 @@ public class LogicaDriversInterfaz implements LogicaDrivers {
 
     @Override
     public void instalarDrivers() {
-        helper.installDrivers(this.thisPC.getModelo(),this.progress );
+        helper.installDrivers(this.thisPC.getModelo());
     }
 
     @Override
