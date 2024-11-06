@@ -12,6 +12,12 @@ import java.io.InputStreamReader;
  * @author adder
  */
 public class LogicaDriversInterfaz implements LogicaDrivers {
+    
+    private Funciones_windows helper = new Funciones_windows();
+    private InfoEntity thisPC;
+    public LogicaDriversInterfaz(){
+        this.thisPC = getInfo();
+    }
 
     @Override
     public InfoEntity getInfo() {
@@ -32,13 +38,13 @@ public class LogicaDriversInterfaz implements LogicaDrivers {
     }
 
     @Override
-    public void instalarDrivers(File carpeta, TextField consola) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void instalarDrivers() {
+        helper.installDrivers(this.thisPC.getModelo());
     }
 
     @Override
-    public File extraerDrivers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void extraerDrivers() {
+        helper.copyDriverStore(this.thisPC.getModelo());
     }
 
     @Override
@@ -97,5 +103,7 @@ public class LogicaDriversInterfaz implements LogicaDrivers {
         }
         return result.toString().trim(); // Remover espacios y saltos de línea finales
     }
+ 
+   
 }
 

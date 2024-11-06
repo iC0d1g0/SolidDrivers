@@ -8,9 +8,9 @@ public interface LogicaDrivers {
        
     public InfoEntity getInfo();
     
-    public void instalarDrivers(File carpeta, TextField consola);
+    public void instalarDrivers();
     
-    public File extraerDrivers();
+    public void extraerDrivers();
     
     public void customDrivers();
     
