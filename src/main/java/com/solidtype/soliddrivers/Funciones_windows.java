@@ -3,82 +3,52 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.solidtype.soliddrivers;
-import java.io.BufferedReader;
+import com.solidtype.soliddrivers.logicaI_instalador.DriversManager;
+import java.awt.TextArea;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.*;
-import java.util.stream.Stream;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
+
 
 
 public class Funciones_windows {
+  
+     private JProgressBar progress;
+     private TextArea console;
+     public Funciones_windows (JProgressBar progress, TextArea console){
+          this.progress = progress;
+        this.console = console;
+     }
     
-    // Método para instalar un driver usando pnputil
-    public void installDriver(Path infFilePath) {
-        System.out.println("Instalando driver: " + infFilePath.toAbsolutePath());
-
-        try {
-            // Ejecuta el comando pnputil
-            ProcessBuilder processBuilder = new ProcessBuilder("pnputil", "/add-driver", infFilePath.toString(), "/install");
-            processBuilder.redirectErrorStream(true); // Combina la salida de error con la salida estándar
-            Process process = processBuilder.start();
-
-            // Lee la salida del proceso para obtener mensajes de instalación
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);  // Imprime la salida (incluye errores)
-                }
-            }
-
-            // Agregar un tiempo de espera al proceso para que intente finalizar en caso de bloqueos
-            boolean completed = process.waitFor(60, java.util.concurrent.TimeUnit.SECONDS);
-            if (completed) {
-                int exitCode = process.exitValue();
-                if (exitCode == 0) {
-                    System.out.println("Driver instalado exitosamente: " + infFilePath.getFileName());
-                } else {
-                    System.out.println("Error al instalar el driver: " + infFilePath.getFileName() + ". Código de salida: " + exitCode);
-                }
-            } else {
-                System.err.println("El proceso tardó demasiado y fue terminado.");
-                process.destroy();  // Termina el proceso si se excede el tiempo de espera
-            }
-
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error al ejecutar pnputil para el archivo: " + infFilePath.getFileName());
-            e.printStackTrace();
-            Thread.currentThread().interrupt();  // Restaura el estado de interrupción
-        }
-    }
-
     // Método para iniciar la instalación de drivers desde la carpeta Binaries
     public void installDrivers(String folderName) {
-        Path driversPath = Paths.get("Binaries", folderName);
-
-        if (!driversPath.toFile().exists()) {
-            System.out.println("Carpeta de drivers no encontrada en: " + driversPath);
-            return;
-        }
-
-        try (Stream<Path> paths = Files.walk(driversPath)) {
-            paths.filter(Files::isRegularFile) // Filtra solo archivos
-                .filter(path -> path.toString().toLowerCase().endsWith(".inf")) // Filtra archivos .inf
-                .forEach(path -> installDriver(path)); // Usar expresión lambda en lugar de referencia de método
-        } catch (IOException e) {
-            System.err.println("Error al recorrer la carpeta: " + driversPath.toAbsolutePath());
-            e.printStackTrace();
-        }
+      
+        DriversManager manager = new DriversManager(folderName, this.console);
+        System.out.println("Voy a iniciar la insalacion de drivers");
+        manager.iniciar();
+      
+        new ProgressUpdater(manager).execute();
     }
-
+    public void println(String texto){
+         this.console.append(texto + "\n");
+    }
     public void copyDriverStore(String folderName) {
         // Ruta de la carpeta FileRepository
+       
+        println("Extrayendo drivers... por favor espere... ");
+        
         String sourcePath = System.getenv("windir") + "\\System32\\DriverStore\\FileRepository";
             // Crear la carpeta "Binaries" en el directorio de ejecución
+        println("Extrayendo desde: "+sourcePath);
         String binariesPath = System.getProperty("user.dir") + File.separator + "Binaries";
         File binariesFolder = new File(binariesPath);
         if (!binariesFolder.exists()) {
             binariesFolder.mkdirs();
+            println("Creando nueva carpeta..");
         }
 
         // Crear la carpeta de destino dentro de "Binaries"
@@ -86,13 +56,16 @@ public class Funciones_windows {
         File destFolder = new File(destPath);
         if (!destFolder.exists()) {
             destFolder.mkdirs();
+            println("Configurando destino :"+ destFolder);
                    // Copiar el contenido de FileRepository a la carpeta de destino
         }
         
         try {
             Files.walk(Paths.get(sourcePath))
                  .forEach(source -> {
+                     
                   Path destination = Paths.get(destPath, source.toString().substring(sourcePath.length()));
+                  println("Copiando: "+source.toString());
          try {
              // Si es un directorio, créalo, si es un archivo, cópialo
              if (Files.isDirectory(source)) {
@@ -101,17 +74,60 @@ public class Funciones_windows {
                  Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
              }
          } catch (IOException e) {
-             System.err.println("Error copiando archivo o creando directorio: " + source + " -> " + destination);
-             e.printStackTrace();
+           
+             println("Error copiando archivo o creando directorio: " + source + " -> " + destination);
+             println(e.getMessage());
+             
          }
          });
-            System.out.println("Archivos copiados exitosamente a: " + destPath);
+            println("");
+            println("");
+            println("Archivos copiados exitosamente a: " + destPath);
         } catch (IOException e) {
-            System.err.println("Error al acceder o copiar los archivos de la carpeta FileRepository.");
-            e.printStackTrace();
+            println("Error al acceder o copiar los archivos de la carpeta FileRepository. " + e.getMessage());
+           
              }
          }
 
  
+     // SwingWorker para actualizar la barra de progreso en la UI
+    private class ProgressUpdater extends SwingWorker<Void, Integer> {
+        private final DriversManager manager;
+        private final int totalDrivers;
+
+        public ProgressUpdater(DriversManager manager) {
+            this.manager = manager;
+            this.totalDrivers = manager.getQueueSize(); // Guardar el total de drivers
+        }
+
+        @Override
+        protected Void doInBackground() {
+            while (!manager.isQueueEmpty()) {
+                int processedDrivers = totalDrivers - manager.getQueueSize();
+                int progress = (int) ((processedDrivers / (double) totalDrivers) * 100);
+                publish(progress); // Publicar el progreso para actualizar en la UI
+                try {
+                    Thread.sleep(500); // Intervalo de actualización
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+            publish(100); // Al finalizar, asegurarse de que la barra de progreso esté al 100%
+            return null;
+        }
+
+        @Override
+        protected void process(List<Integer> chunks) {
+            int lastProgress = chunks.get(chunks.size() - 1);
+            progress.setValue(lastProgress); // Actualizar la barra de progreso
+        }
+
+        @Override
+        protected void done() {
+            JOptionPane.showMessageDialog(null, "Instalación completada.");
+        }
+    }
+
 }
 

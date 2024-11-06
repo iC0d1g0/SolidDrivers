@@ -1,22 +1,30 @@
 
 package com.solidtype.soliddrivers;
 
+import java.awt.TextArea;
 import java.awt.TextField;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import javax.swing.JProgressBar;
 /**
  *
  * @author adder
  */
 public class LogicaDriversInterfaz implements LogicaDrivers {
     
-    private Funciones_windows helper = new Funciones_windows();
+    private Funciones_windows helper ;
     private InfoEntity thisPC;
-    public LogicaDriversInterfaz(){
+    private JProgressBar progress;
+    private TextArea console;
+    
+    public LogicaDriversInterfaz(JProgressBar progress, TextArea console){
         this.thisPC = getInfo();
+        this.progress = progress;
+        this.console = console;
+        helper = new Funciones_windows(progress,console);
     }
 
     @Override
