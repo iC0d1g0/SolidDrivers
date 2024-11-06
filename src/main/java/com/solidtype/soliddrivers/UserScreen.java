@@ -13,10 +13,13 @@ public class UserScreen extends javax.swing.JFrame {
     /**
      * Creates new form UserScreen
      */
-    private final LogicaDrivers driver= new  LogicaDriversInterfaz();
+    private final LogicaDrivers driver;
     public UserScreen() {
         initComponents();
-        
+        driver  = new  LogicaDriversInterfaz( jProgressBar1);
+        jProgressBar1.setMinimum(0);
+        jProgressBar1.setMaximum(100);
+        jProgressBar1.setValue(0);
     }
 
     /**

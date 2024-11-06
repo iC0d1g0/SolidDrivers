@@ -1,0 +1,115 @@
+;
+; AppleKIS.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=USBDevice
+ClassGuid={88BAE032-5A81-49f0-BC3D-A4FF138216D6}
+Provider=%ManufacturerName%
+CatalogFile=AppleKIS.cat
+DriverVer = 07/19/2022,1.1.3.0
+PnpLockdown=1
+
+[DestinationDirs]
+DefaultDestDir = 12
+AppleKIS_Device_CoInstaller_CopyFiles = 11
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+AppleKIS.sys  = 1,,
+AppleKISInterface.dll = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+;%iPhone.DeviceDesc%=AppleUSB_CCGPDriverInstall, USB\VID_05AC&PID_12A8
+;%AppleKIS.DeviceDesc%=AppleKIS_Device, USB\VID_05AC&PID_12A8&MI_00
+%AppleKIS.DeviceDesc%=AppleKIS_Device, USB\VID_05AC&PID_1881
+;%iPhone.DeviceDesc%=AppleUSB_CCGPDriverInstall, USB\VID_05AC&PID_1881
+
+;
+;---Install CCGP driver for iPhone
+;
+;[AppleUSB_CCGPDriverInstall.NT]
+;Include=usb.inf
+;Needs=Composite.Dev.NT
+;FeatureScore=0x7F
+
+;[AppleUSB_CCGPDriverInstall.NT.Services]
+;Include=usb.inf
+;Needs=Composite.Dev.NT.Services
+
+;[AppleUSB_CCGPDriverInstall.NT.HW]
+;AddReg=AppleUSB_CCGPDriverInstall_AddReg.HW
+
+;[AppleUSB_CCGPDriverInstall_AddReg.HW]
+;HKR,,"OriginalConfigurationValue",0x00010001,2
+;HKR,,"UsbccgpCapabilities",0x00010001,0x10
+;HKR,,FriendlyName,,%iPhone.DeviceDesc%
+
+[AppleKIS_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+AppleKIS.sys
+AppleKISInterface.dll
+
+[AppleKIS_Device.NT.HW]
+AddReg=AppleKIS_AddReg
+
+[AppleKIS_AddReg]
+; By default, USBDevice class uses iProduct descriptor to name the device in
+; Device Manager on Windows 8 and higher.
+; Uncomment for this device to use %DeviceName% on Windows 8 and higher:
+HKR,,FriendlyName,,%AppleKIS.DeviceDesc%
+
+;-------------- Service installation
+[AppleKIS_Device.NT.Services]
+AddService = AppleKIS,%SPSVCINST_ASSOCSERVICE%, AppleKIS_Service_Inst
+
+; -------------- AppleKIS driver install sections
+[AppleKIS_Service_Inst]
+DisplayName    = %AppleKIS.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\AppleKIS.sys
+
+;
+;--- AppleKIS_Device Coinstaller installation ------
+;
+
+[AppleKIS_Device.NT.CoInstallers]
+AddReg=AppleKIS_Device_CoInstaller_AddReg
+CopyFiles=AppleKIS_Device_CoInstaller_CopyFiles
+
+[AppleKIS_Device_CoInstaller_AddReg]
+;
+
+
+[AppleKIS_Device_CoInstaller_CopyFiles]
+;
+
+
+[AppleKIS_Device.NT.Wdf]
+KmdfService =  AppleKIS, AppleKIS_wdfsect
+[AppleKIS_wdfsect]
+KmdfLibraryVersion = 1.25
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="Apple, Inc."
+ClassName="Universal Serial Bus devices"
+DiskName = "AppleKIS Installation Disk"
+AppleKIS.DeviceDesc = "Apple KIS"
+AppleKIS.SVCDESC = "Apple KIS Service"
+REG_MULTI_SZ = 0x00010000
+

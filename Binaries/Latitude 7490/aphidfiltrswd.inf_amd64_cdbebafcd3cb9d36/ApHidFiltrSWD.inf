@@ -1,0 +1,1065 @@
+;---------------------------------------------------------------------
+; ApHidfiltr.inf
+;
+; AlpsAlpine I2C HID Device Driver for x64 Windows Installation
+; Copyright(C) 1999-2017 ALPSALPINE Co., Ltd.
+;---------------------------------------------------------------------
+
+[Version]
+Signature	= "$Windows NT$"
+Provider	= %Provider%
+Class		= HIDClass
+ClassGUID	= {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+CatalogFile	= ApHidfiltrSWD.cat
+DriverVer	= 05/18/2021, 10.3201.101.216
+;DriverPackageDisplayName	= "Dell Touchpad"
+
+[DestinationDirs]
+DefaultDestDir			= 12
+HidFilter_CopyFilesDll		= 11
+HidFilter_CopyFilesHome		= 11, %Apoint_Path%
+HidFilter_CopyFilesCursor	= 11, %Path_Data_Cur%
+
+; Manufacturer Sections
+; ---------------------------------------------------------
+[Manufacturer]
+%Mfg.Desc%		= CompanyMfg,NTamd64.10.0
+
+[CompanyMfg.NTamd64.10.0]; for Win10 64-bit later
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10.nt, ACPI\AUI0000&Col03
+
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_01.nt, HID\DELL081A&Col03	; Steamboat MLK 12
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_01.nt, HID\DELL081B&Col03	; Steamboat MLK 13
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_01.nt, HID\DELL081C&Col03	; Steamboat MLK 14
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0815&Col03	; Breckenridge MLK 12 KBL-R
+%Apoint.DeviceDesc% = HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0816&Col03  ; Breckenridge MLK 14 KBL-R
+%Apoint.DeviceDesc% = HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0834&Col03  ; Breckenridge MLK 14 KBL-R(Wyse)
+%Apoint.DeviceDesc% = HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0818&Col03  ; Breckenridge MLK 14 CFL-H
+%Apoint.DeviceDesc% = HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0817&Col03  ; Breckenridge MLK 15 KBL-R
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0819&Col03	; Breckenridge MLK 15 CFL-H
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0820&Col03	; Breckenridge-P MLK 15 CFL-H
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0814&Col03	; WT
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_03.nt, HID\DELL0823&Col03	; Kirkwood MLK 13 KBL-R
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0831&Col03	; Whitehaven 15 CFL-H Titan Ridge
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL1831&Col03	; Whitehaven 15 CFL-H Titan Ridge
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0832&Col03	; Whitehaven 17 CFL-H Titan Ridge
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL1832&Col03	; Whitehaven 17 CFL-H Titan Ridge
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL0889&Col03	; Whitehaven 15 CFL-H Alpine Ridge
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL1889&Col03	; Whitehaven 15 CFL-H Alpine Ridge
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL088A&Col03	; Whitehaven 17 CFL-H Alpine Ridge
+%Apoint.DeviceDesc%	= HidFilter_Inst_W10_Dell_G9_02.nt, HID\DELL188A&Col03	; Whitehaven 17 CFL-H Alpine Ridge
+
+
+[ControlFlags]
+;ExcludeFromSelect=*
+
+
+; Install Sections
+; ---------------------------------------------------------
+; -------------------- Default Setting --------------------
+; ---------------------------------------------------------
+; -------------------- for Windows 10 --------------------
+[HidFilter_Inst_W10.nt]
+CopyINF 	= ApVHid.inf
+CopyFiles	= HidFilter_CopyFiles, HidFilter_CopyFilesDll, HidFilter_CopyFilesHome, HidFilter_CopyFilesCursor
+AddReg		= HidFilter_Inst.AddReg, DriverInfoAddReg
+
+[HidFilter_Inst_W10.nt.Services]
+AddService	= ApHidfiltrService, 0x00000002, filter_Service_Inst
+AddService	= ApHidMonitorService,0x00000800, HidMonitor_Service_Inst
+
+[HidFilter_Inst_W10.nt.HW]
+AddReg		= HidFilter_Inst.AddReg
+
+[HidFilter_Inst_W10.nt.Wdf]
+KmdfService	= ApHidfiltrService, HidFilter_Inst_wdfsect
+
+
+
+; ---------------------------------------------------------
+; ----------------- Dell_G9_01 Setting -------------------
+; ---------------------------------------------------------
+; -------------------- for Windows 10 --------------------
+[HidFilter_Inst_W10_Dell_G9_01.nt]
+CopyINF 	= ApVHid.inf
+CopyFiles	= HidFilter_CopyFiles, HidFilter_CopyFilesDll, HidFilter_CopyFilesHome, HidFilter_CopyFilesCursor
+AddReg		= HidFilter_Inst.AddReg, DriverInfoAddReg, HidFilter_Inst_Dell_G9_01.AddReg
+
+[HidFilter_Inst_W10_Dell_G9_01.nt.Services]
+AddService	= ApHidfiltrService, 0x00000002, filter_Service_Inst
+AddService	= ApHidMonitorService,0x00000800, HidMonitor_Service_Inst
+
+[HidFilter_Inst_W10_Dell_G9_01.nt.HW]
+AddReg		= HidFilter_Inst.AddReg, HidFilter_Inst_Dell_G9_01.AddReg
+
+[HidFilter_Inst_W10_Dell_G9_01.nt.Wdf]
+KmdfService	= ApHidfiltrService, HidFilter_Inst_wdfsect
+
+
+
+
+; ---------------------------------------------------------
+; ----------------- Dell_G9_02 Setting -------------------
+; ---------------------------------------------------------
+; -------------------- for Windows 10 --------------------
+[HidFilter_Inst_W10_Dell_G9_02.nt]
+CopyINF 	= ApVHid.inf
+CopyFiles	= HidFilter_CopyFiles, HidFilter_CopyFilesDll, HidFilter_CopyFilesHome, HidFilter_CopyFilesCursor
+AddReg		= HidFilter_Inst.AddReg, DriverInfoAddReg, HidFilter_Inst_Dell_G9_02.AddReg
+
+[HidFilter_Inst_W10_Dell_G9_02.nt.Services]
+AddService	= ApHidfiltrService, 0x00000002, filter_Service_Inst
+AddService	= ApHidMonitorService,0x00000800, HidMonitor_Service_Inst
+
+[HidFilter_Inst_W10_Dell_G9_02.nt.HW]
+AddReg		= HidFilter_Inst.AddReg, HidFilter_Inst_Dell_G9_02.AddReg
+
+[HidFilter_Inst_W10_Dell_G9_02.nt.Wdf]
+KmdfService	= ApHidfiltrService, HidFilter_Inst_wdfsect
+
+
+
+
+; ---------------------------------------------------------
+; ----------------- Dell_G9_03 Setting -------------------
+; ---------------------------------------------------------
+; -------------------- for Windows 10 --------------------
+[HidFilter_Inst_W10_Dell_G9_03.nt]
+CopyINF 	= ApVHid.inf
+CopyFiles	= HidFilter_CopyFiles, HidFilter_CopyFilesDll, HidFilter_CopyFilesHome, HidFilter_CopyFilesCursor
+AddReg		= HidFilter_Inst.AddReg, DriverInfoAddReg, HidFilter_Inst_Dell_G9_03.AddReg
+
+[HidFilter_Inst_W10_Dell_G9_03.nt.Services]
+AddService	= ApHidfiltrService, 0x00000002, filter_Service_Inst
+AddService	= ApHidMonitorService,0x00000800, HidMonitor_Service_Inst
+
+[HidFilter_Inst_W10_Dell_G9_03.nt.HW]
+AddReg		= HidFilter_Inst.AddReg, HidFilter_Inst_Dell_G9_03.AddReg
+
+[HidFilter_Inst_W10_Dell_G9_03.nt.Wdf]
+KmdfService	= ApHidfiltrService, HidFilter_Inst_wdfsect
+
+
+
+
+; Files Copy Sections
+; ---------------------------------------------------------
+[HidFilter_CopyFiles]
+ApHidfiltrSW.sys
+
+[HidFilter_CopyFilesDll]
+Vxdif.dll
+
+[HidFilter_CopyFilesHome]
+ApRemote.exe
+Apoint.exe
+ApntEx.exe
+Apoint.dll
+Elprop.dll
+EzAuto.dll
+hidfind.exe
+ApMsgFwd.exe
+ApMouCpl.dll
+DellTPad.exe
+HidMonitorSvc.exe
+ApSearch.dll
+ApTaskLink.xml
+ApClose.exe
+Uninstap.exe
+Uninstaller.exe
+
+
+[HidFilter_CopyFilesCursor]
+
+
+
+
+; AddReg Sections
+; ---------------------------------------------------------
+[HidFilter_Inst.AddReg] 
+HKCR,CLSID\%APMOUCPL_GUID%\InProcServer32,,		0x00020000,"%%SystemRoot%%\system32\%Apoint_Path%\ApMouCpl.dll"	;Add "Dell Touchpad"-tab to "Mouse Properties".
+HKCR,CLSID\%APMOUCPL_GUID%\InProcServer32,ThreadingModel,0x00000000,Apartment
+;HKLM,%SHELLPROP%\AlpsDellTouchpad,,			0x00000000,%APMOUCPL_GUID%
+HKCR,CLSID\%APOINT_GUID%,"",				0x00000000,Dell Touchpad
+HKCR,CLSID\%APOINT_GUID%,"LocalizedString",		0x00000000,@%%SystemRoot%%\system32\%Apoint_Path%\DellTouchpad.exe
+HKCR,CLSID\%APOINT_GUID%,"InfoTip",			0x00000000,@%%SystemRoot%%\system32\%Apoint_Path%\DellTouchpad.exe
+HKCR,CLSID\%APOINT_GUID%,"System.ApplicationName",	0x00000000,Alps.DellTouchpad
+HKCR,CLSID\%APOINT_GUID%,"System.ControlPanel.Category",0x00000000,2
+HKCR,CLSID\%APOINT_GUID%,"System.Software.TasksFileUrl",0,"%%SystemRoot%%\system32\%Apoint_Path%\ApTaskLink.xml"
+HKCR,CLSID\%APOINT_GUID%\DefaultIcon, 	"",		0x00000000,%%SystemRoot%%\system32\%Apoint_Path%\DellTPad.exe
+HKCR,CLSID\%APOINT_GUID%\Shell\Open\Command, "",	0x00000000,"Rundll32.exe Vxdif Vxd_launch_UI"
+;HKLM,%SHELLPROP_CP%\%APOINT_GUID%,	"",		0x00000000,Dell Touchpad
+
+HKR,%UNINST%,		"DisplayName",			0x00000000,"Dell Touchpad"
+HKR,%UNINST%,		"DisplayVersion",		0x00000000,%DriverOEMVersion%
+HKR,%UNINST%,		"Publisher",			0x00000000,"ALPSALPINE CO., LTD."
+HKR,%UNINST%,		"VersionMajor",			0x00010001,0x0000000A
+HKR,%UNINST%,		"VersionMinor",			0x00010001,0x0000089F
+
+;// Set HKR\Software\Alps\Apoint
+HKR,%SetApoint%,	"HomeDirectory",		0x00020000,"%%SystemRoot%%\system32\%Apoint_Path%"
+HKR,%SetApoint%,	"TrayIcon",			0x00020000,TRUE
+HKR,%SetApoint%,	"UseSound",			0x00010001,0x00000000
+HKR,%SetApoint%,	"ProductVer",			0x00020000,%ProductVersion%
+HKR,%SetApoint%,	"SnapTo",			0x00010001,0x00000000
+HKR,%SetApoint%,	"EnableMultiUser",		0x00010001,0x00000002
+HKR,%SetApoint%,	"SupportFunctionTab",		0x00010001,0x000005fb
+HKR,%SetApoint%,	"TouchSensitivity",		0x00010001,0x00000008
+HKR,%SetApoint%,	"Install_Flag",			0x00010001,0x00000001
+HKR,%SetApoint%,	"EnableAreaSwitch",		0x00010001,0x00000001
+HKR,%SetApoint%,	"EnableTouchSensitivity",	0x00010001,0x00000001
+HKR,%SetApoint%,	"SupportLanguage",		0x00010001,0x3ff77fff
+HKR,%SetApoint%,	"UserDefUILanID",		   0x00010001,0x00000000
+HKR,%SetApoint%,	"SysDefLanID",		   0x00010001,0x00000000
+HKR,%SetApoint%,	"GP_Series",			0x00010001,0x00000002
+HKR,%SetApoint%,	"SP_PressMenuDisp",		0x00010001,0x00000000
+HKR,%SetApoint%,	"OEM_ID",			0x00010001,0x00000001
+HKR,%SetApoint%,	"Support_USB_Button_Swap",	0x00010001,0x00000001
+HKR,%SetApoint%,	"HidFindLaunchSW",		0x00010001,0x00000001
+HKR,%SetApoint%,	"TouchPadOnOffContext",		0x00010001,0x00000000
+HKR,%SetApoint%,	"TouchPadOnOffLocked",		0x00010001,0x00000001
+HKR,%SetApoint%,	"ApMsgFwd_Flags", 		0x00010001,0x000002FF
+HKR,%SetApoint%,	"ID_Emulate_Switch",		0x00010001,0x00000001
+HKR,%SetApoint%,	"Target_ID",			0x00010001,0x00500273
+HKR,%SetApoint%,	"EmulateDeviceType",		0x00010001,0xA00114AD
+HKR,%SetApoint%,	"EmulateDeviceID",		0x00010001,0x000A0273
+HKR,%SetApoint%,	"UseCustomGUI", 		0x00010001,0x00000001
+HKR,%SetApoint%,	"CustomGUI_Name",		0x00020000,"DellTouchpad.exe"
+HKR,%SetApoint%,	"Lang_CH_HongKong",		0x00010001,0x00000003
+HKR,%SetApoint%,	"Lang_CH_Macau",		0x00010001,0x00000003
+HKR,%SetApoint%,	"Lang_CH_Singapore",		0x00010001,0x00000002
+HKR,%SetApoint%,	"Lang_PO_Portugal", 		0x00010001,0x00000003
+HKR,%SetApoint%,	"SkinType", 			0x00010001,0x00000004
+HKR,%SetApoint%,	"UseBtnMessageVersion", 	0x00010001,0x00000600
+HKR,%SetApoint%,	"CursorChangeType", 		0x00010001,0x00300000
+HKR,%SetApoint%,	"DisableForceOffClickLock",	0x00010001,0x00000001
+HKR,%SetApoint%,	"SupportMultiGesture",		0x00010001,0x00000000
+HKR,%SetApoint%,	"ShowMultiGestureUI",		0x00010001,0x00000000
+HKR,%SetApoint%,	"TPForceEnableAfterEvent",	0x00010001,0x00000166
+HKR,%SetApoint%,	"SupportInertialScroll",	0x00010001,0x00000001
+HKR,%SetApoint%,	"CursorBugFixMethod",		0x00010001,0x00000001
+HKR,%SetApoint%,	"SupportSendTapBtnMes",		0x00010001,0x00000002
+HKR,%SetApoint%,	"HideScrollandZoom", 		0x00010001,0x00000001
+HKR,%SetApoint%,	"AlpsDeviceIFSupport",		0x00010001,0x00000001
+; for Dell G9 switchable driver
+HKR,%SetApoint%,	"SupportFWPTP",			0x00010001,0x00000001
+HKR,%SetApoint%,	"SupportPTPMode",		0x00010001,0x00000001
+HKR,%SetApoint%,	"PTPModeOn",			0x00010001,0x00000001
+HKR,%SetApoint%,	"PTPSwitchStatus",		0x00010001,0x00010001
+HKR,%SetApoint%,	"ShowLegacySettingsStatus",	0x00010001,0x00000000
+HKR,%SetApoint%,   "ApRemoteProcessID",    0x00010001,0x00000000
+HKR,%SetApoint%,   "IsG9UWP",              0x00010001,0x00000001
+HKR,%SetApoint%,   "CustomUI",              0x00000000,"G9"
+; for ApHidService
+HKR,%SetApoint%,	"ApHidServiceSupport", 		0x00010001,0x00000001
+HKR,%SetApoint%,	"ApHidServiceTPDisableMethod", 	0x00010001,0x00000000
+HKR,%SetApoint%,	"ApHidServiceLogonSpec", 	0x00010001,0x00000000
+
+;// Set HKR\Software\Alps\Apoint\SelectDevice
+HKR,%SetSelectDev%,	"SelectDevice",			0x00010001,0x0000003F
+
+;// Set HKR\Software\Alps\Apoint\Button
+HKR,%SetButton%,	"ButtonFunction",		0x00010001,0x0054e500
+HKR,%SetButton%,	"DoubleClkSpeed",		0x00010001,0x00000008
+HKR,%SetButton%,	"EnableWheel",			0x00010001,0x00000020
+HKR,%SetButton%,	"USB_Button_Swap",		0x00010001,0x00000000
+HKR,%SetButton%,	"AppReg1",			0x00000000,""
+HKR,%SetButton%,	"AppReg2",			0x00000000,""
+HKR,%SetButton%,	"AppReg3",			0x00000000,""
+HKR,%SetButton%,	"AppReg8",			0x00000000,""
+HKR,%SetButton%,	"AppRegSP1",			0x00000000,""
+HKR,%SetButton%,	"AppRegSP2",			0x00000000,""
+HKR,%SetButton%,	"AppRegSP3",			0x00000000,""
+HKR,%SetButton%,	"AppRegSP8",			0x00000000,""
+HKR,%SetButton%,	"Scroll_HV",			0x00010001,0x00000003
+HKR,%SetButton%,	"ButtonFunction0",		0x00010001,0x00000005
+HKR,%SetButton%,	"ButtonFunction1",		0x00010001,0x00000005
+HKR,%SetButton%,	"ButtonFunction2",		0x00010001,0x00000004
+HKR,%SetButton%,	"ButtonFunction3",		0x00010001,0x0000000e
+HKR,%SetButton%,	"ButtonFunction8",		0x00010001,0x0000000e
+HKR,%SetButton%,	"SPFunction0",			0x00010001,0x00000005
+HKR,%SetButton%,	"SPFunction1",			0x00010001,0x00000005
+HKR,%SetButton%,	"SPFunction2",			0x00010001,0x00000004
+HKR,%SetButton%,	"SPFunction3",			0x00010001,0x00000010
+HKR,%SetButton%,	"SPFunction8",			0x00010001,0x0000000e
+HKR,%SetButton%,	"MouFunction1",			0x00010001,0x00000005
+HKR,%SetButton%,	"MouFunction2",			0x00010001,0x00000004
+HKR,%SetButton%,	"MouFunction3",			0x00010001,0x0000000e
+
+;// Set HKR\Software\Alps\Apoint\Orientation
+HKR,%SetOrientation%,	"Rotation",			0x00010001,0x00000000
+
+;// Set HKR\Software\Alps\Apoint\Tapping
+HKR,%SetTapping%,	"Tapping",			0x00010001,0x00000001
+HKR,%SetTapping%,	"TapSettings",			0x00010001,0x00000008
+HKR,%SetTapping%,	"TapTyping",			0x00010001,0x00000001
+HKR,%SetTapping%,	"TapTypingDelay",		0x00010001,0x00000002
+HKR,%SetTapping%,	"AutoRelease",			0x00010001,0x00000001
+HKR,%SetTapping%,	"TouchSensitivity",		0x00010001,0x00000008
+HKR,%SetTapping%,	"TypingDetect",			0x00010001,0x00000002
+HKR,%SetTapping%,	"TypingInhibit",		0x00010001,0x0000006F
+HKR,%SetTapping%,	"EnableCustomTapOffTimer",	0x00010001,0x00000001
+HKR,%SetTapping%,	"CustomTapOffTimer",		0x00000000,"200,350,500,1500,2500"
+
+;// Set HKR\Software\Alps\Apoint\Gesture
+HKR,%SetGesture%,	"EasyX",			0x00010001,0x00000000
+HKR,%SetGesture%,	"EnableFB",			0x00010001,0x00000000
+HKR,%SetGesture%,	"LockAreaSet",			0x00010001,0x00000001
+HKR,%SetGesture%,	"CornerTapOffsetX",		0x00010001,0x0000004b
+HKR,%SetGesture%,	"CornerTapOffsetY",		0x00010001,0x0000004b
+HKR,%SetGesture%,	"PadScrollLines",		0,3
+HKR,%SetGesture%,	"AppReg0",			0x00000000,""
+HKR,%SetGesture%,	"AppReg1",			0x00000000,""
+HKR,%SetGesture%,	"AppReg2",			0x00000000,""
+HKR,%SetGesture%,	"AppReg3",			0x00000000,""
+HKR,%SetGesture%,	"ShowCorner",			0x00010001,0x01100110
+HKR,%SetGesture%,	"ScrollSettingType",		0x00010001,0x00000003
+HKR,%SetGesture%,	"FingerSizeShow",		0x00010001,0x00000000
+HKR,%SetGesture%,	"PalmCheck",			0x00010001,0x00000003
+HKR,%SetGesture%,	"EnableMultiGesture",		0x00010001,0x00000001
+HKR,%SetGesture%,	"AdjScroll_Desktop",		0x00010001,0x00000001
+HKR,%SetGesture%,	"AdjScrollSpeed_FileExploler",	0x00010001,0x00000003
+
+;// Set HKR\Software\Alps\Stick
+HKR,%SetStick%,	"SPSpeed",			0x00010001,0x00000050
+HKR,%SetStick%,	"SPTapping",			0x00010001,0x00000000
+HKR,%SetStick%,	"SPTapSettings",		0x00010001,0x00000001
+HKR,%SetStick%,	"SPTapTyping",			0x00010001,0x00000001
+HKR,%SetStick%,	"SPTapTypingDelay",		0x00010001,0x00000002
+HKR,%SetStick%,	"SPTypingInhibit",		0x00010001,0x00000007
+HKR,%SetStick%,	"EnableSPCustomTapOffTimer",	0x00010001,0x00000001
+HKR,%SetStick%,	"SPCustomTapOffTimer",		0x00000000,"200,350,500,1500,2500"
+HKR,%SetStick%,	"SPFunction",			0x00010001,0x0054a500
+HKR,%SetStick%,	"SPScroll",			0x00010001,0x00000002 ; B0:SP Scroll Bit / B1:1 Only
+HKR,%SetStick%,	"SPScrollLines",		0,2
+HKR,%SetStick%,	"SP_PressSelect",		0x00010001,0x00000000
+HKR,%SetStick%,	"SpTypingSound",		0x00000000,""
+HKR,%SetStick%,	"SPScrollThreshold",		0x00010001,0x00000096
+HKR,%SetStick%,	"SPScrollDirecLock",		0x00010001,0x00000001
+
+;// Set HKR\Software\Alps\Other
+HKR,%SetOther%,	"TrayIcon",			0x00020000,TRUE
+HKR,%SetOther%,	"UseSound",			0x00010001,0x00000000
+HKR,%SetOther%,	"UseIMECap",			0x00010001,0x00000000
+HKR,%SetOther%,	"EnableTPOn_LogOn",		0x00010001,0x00000001
+HKR,%SetOther%,	"TrayIconAnimate",		0x00010001,0x00010003
+HKR,%SetOther%,	"ShowOSDStatus",		0x00010001,0x00000000
+
+;// Set HKR\Software\Alps\USBMouse
+HKR,%SetUSBMouse%,	"USBMouse",			0x00010001,0x00000000
+HKR,%SetUSBMouse%,	"ShowBalloon",			0x00010001,0x00000000
+
+;// Set HKR\Software\Alps\USBMouse\Exceptions (; VVVVPPPP (VVVV=VID,PPPP=PID))
+HKR,%SetUSBMouseExcept%, "USB_0",			0x00010001,0x0A5C4503	; for BT355
+HKR,%SetUSBMouseExcept%, "USB_1",			0x00010001,0x413C8103	; for BT350
+HKR,%SetUSBMouseExcept%, "USB_2",			0x00010001,0x413C8126	; for Entwood/Fangron 355
+HKR,%SetUSBMouseExcept%, "USB_3",			0x00010001,0x413C8127	; for Entwood/Fangron 355
+HKR,%SetUSBMouseExcept%, "USB_4",			0x00010001,0x413C8140	; for Riveria/Suncoast 360
+HKR,%SetUSBMouseExcept%, "USB_5",			0x00010001,0x413C8145	; for Redrock 400
+HKR,%SetUSBMouseExcept%, "USB_6",			0x00010001,0x413C8146	; for Redrock 400
+HKR,%SetUSBMouseExcept%, "USB_7",			0x00010001,0x413C8154	; for Hardrock 410
+HKR,%SetUSBMouseExcept%, "USB_8",			0x00010001,0x413C8158	; for Littlerock 370
+HKR,%SetUSBMouseExcept%, "USB_9",			0x00010001,0x413C8162	; for Littlestone 365
+HKR,%SetUSBMouseExcept%, "USB_10",			0x00010001,0x413C8167	; for Littlestone 365
+HKR,%SetUSBMouseExcept%, "USB_11",			0x00010001,0x413C8168	; for Littlerock 370
+HKR,%SetUSBMouseExcept%, "USB_12",			0x00010001,0x413C8169	; for Hardrock 410
+HKR,%SetUSBMouseExcept%, "USB_13",			0x00010001,0x413C8151	; for Hardrock 410
+HKR,%SetUSBMouseExcept%, "USB_14",			0x00010001,0x413C8155	; for Littlerock 370
+HKR,%SetUSBMouseExcept%, "USB_15",			0x00010001,0x413C8159	; for Littlestone 365
+HKR,%SetUSBMouseExcept%, "USB_16",			0x00010001,0x413C8160	; for DELL Wireless 365 Bluetooth Module
+HKR,%SetUSBMouseExcept%, "USB_17",			0x00010001,0x04B4E124	; for DELL XPS12
+HKR,%SetUSBMouseExcept%, "USB_18",			0x00010001,0x044E1212	; for BRECKENRIDGE 14
+HKR,%SetUSBMouseExcept%, "USB_19",			0x00010001,0x056A4846	; for E8 (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_20",			0x00010001,0x056A4847	; for E8 (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_21",			0x00010001,0x056A4848	; for E8 (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_22",			0x00010001,0x056A4841	; for G9 KW13 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_23",			0x00010001,0x056A4840   ; for G9 KW13 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_24",			0x00010001,0x2386350E   ; for G9 BR14 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_25",			0x00010001,0x1FD26004   ; for G9 BR14 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_26",			0x00010001,0x23863114   ; for G9 BR15 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_27",			0x00010001,0x1FD26003   ; for G9 BR15 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_28",			0x00010001,0xAF06142D   ; for G9 Steamboat13 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_29",			0x00010001,0xE4300598   ; for G9 Steamboat13 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_30",			0x00010001,0x04F325B6   ; for G9 Steamboat14 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_31",			0x00010001,0x1FD27007   ; for G9 Steamboat14 MLK (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_32",			0x00010001,0x25EC04F3   ; for G9 Whitehaven15 (Touch screen)
+HKR,%SetUSBMouseExcept%, "USB_33",			0x00010001,0x04F325ED   ; for G9 Whitehaven15 (Touch screen)
+
+
+;// Set HKR\Software\Alps\Exceptions
+
+; <Win10>
+HKR,%SetExceptions%\10.0,"S>>CabinetWClass",		0x00010001,0x00000008
+HKR,%SetExceptions%\10.0,"S>>Notepad",			0x00010001,0x00000008
+HKR,%SetExceptions%\10.0,"S>>WordPadClass",		0x00010001,0x00000008
+HKR,%SetExceptions%\10.0,"S>>XLMAIN",			0x00010001,0x0000001C
+HKR,%SetExceptions%\10.0,"S>>MozillaWindowClass",	0x00010001,0x000A000C
+HKR,%SetExceptions%\10.0,"S>>Chrome_WidgetWin_1",	0x00010001,0x0000000A
+HKR,%SetExceptions%\10.0,"S>>OpusApp",			0x00010001,0x0000000C
+HKR,%SetExceptions%\10.0,"S>>PPTFrameClass",		0x00010001,0x0000003C
+HKR,%SetExceptions%\10.0,"S>>AcrobatSDIWindow",	0x00010001,0x0000001B
+HKR,%SetExceptions%\10.0,"S>>MSWinPub",		0x00010001,0x0000003C
+HKR,%SetExceptions%\10.0,"S>>MSPaintApp",		0x00010001,0x0000000C
+HKR,%SetExceptions%\10.0,"S>>Framework::CFrame",	0x00010001,0x0000000B
+HKR,%SetExceptions%\10.0,"S>>CLViewServer12",		0x00010001,0x0000000C
+
+;// Set HKR\Software\Alps\Apoint\InertialMovemnet
+HKR,%SetIM%,		"EnableInertialMovement",	0x00010001,0x00000001
+HKR,%SetIM%,		"EnableOnlyWhenDrag",		0x00010001,0x00000001
+HKR,%SetIM%,		"Horizontal_Left",		0x00010001,0x00000021
+HKR,%SetIM%,		"Horizontal_Right",		0x00010001,0x00000021
+HKR,%SetIM%,		"Vertical_Top",			0x00010001,0x00000022
+HKR,%SetIM%,		"Vertical_Bottom",		0x00010001,0x00000022
+HKR,%SetIM%,		"IM_Delta",			0x00010001,0x00000001
+HKR,%SetIM%,		"IM_DeltaAlpha",		0x00010001,0x0000000F
+HKR,%SetIM%,		"IM_Period",			0x00010001,0x0000000A
+HKR,%SetIM%,		"IM_Speed",			0x00010001,0x00000003
+HKR,%SetIM%,		"IM_SuppressMove",		0x00010001,0x00000000
+
+;// Set HKR\Software\Alps\Apoint\EdgeAction
+HKR,%SetEdgeAction%,	"SupportEdgeAction",		0x00010001,0x00000000
+HKR,%SetEdgeAction%,	"EnableEdgeAction_L",		0x00010001,0x00000000
+HKR,%SetEdgeAction%,	"EnableEdgeAction_R",		0x00010001,0x00000000
+HKR,%SetEdgeAction%,	"EnableEdgeAction_U",		0x00010001,0x00000000
+HKR,%SetEdgeAction%,	"EnableEdgeAction_UL",		0x00010001,0x00000000
+HKR,%SetEdgeAction%,	"MoveCursorEA_L",		0x00010001,0x00000000
+HKR,%SetEdgeAction%,	"StopCursorEA_RT",		0x00010001,0x00000000
+
+;// Set HKR\Software\Alps\Apoint\Params\Default
+HKR,%SetParamsDef%,	"MouseSensitivity_2K",		0x00010001,10
+HKR,%SetParamsDef%,	"MouseSpeed_2K",		0x00010001,1
+HKR,%SetParamsDef%,	"MouseThreshold1_2K",		0x00010001,7
+HKR,%SetParamsDef%,	"MouseThreshold2_2K",		0x00010001,0
+HKR,%SetParamsDef%,	"MouseSensitivity_XP",		0x00010001,10
+HKR,%SetParamsDef%,	"MouseSpeed_XP",		0x00010001,1
+HKR,%SetParamsDef%,	"MouseThreshold1_XP",		0x00010001,6
+HKR,%SetParamsDef%,	"MouseThreshold2_XP",		0x00010001,10
+HKR,%SetParamsDef%,	"TrayIcon",			0x00010001,0x00000001
+HKR,%SetParamsDef%,	"SelectDevice",			0x00010001,0x0000003F
+HKR,%SetParamsDef%,	"USBMouse",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"ButtonFunction",		0x00010001,0x0054e500
+HKR,%SetParamsDef%,	"DoubleClkSpeed",		0x00010001,0x00000008
+HKR,%SetParamsDef%,	"USB_Button_Swap",		0x00010001,0x00000000
+HKR,%SetParamsDef%,	"CoverSetting",			0x00010001,0x00000002
+HKR,%SetParamsDef%,	"TouchSensitivity",		0x00010001,0x00000008
+HKR,%SetParamsDef%,	"Tapping",			0x00010001,0x00000001
+HKR,%SetParamsDef%,	"TapSettings",			0x00010001,0x00000008
+HKR,%SetParamsDef%,	"TapTyping",			0x00010001,0x00000001
+HKR,%SetParamsDef%,	"TapTypingDelay",		0x00010001,0x00000002
+HKR,%SetParamsDef%,	"SPScroll",			0x00010001,0x00000002
+HKR,%SetParamsDef%,	"SPSpeed",			0x00010001,0x00000050
+HKR,%SetParamsDef%,	"SPTapping",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"SPTapSettings",		0x00010001,0x00000001
+HKR,%SetParamsDef%,	"SPTapTyping",			0x00010001,0x00000001
+HKR,%SetParamsDef%,	"SPTapTypingDelay",		0x00010001,0x00000002
+HKR,%SetParamsDef%,	"EnableFB",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"EnableWheel",			0x00010001,0x00000020
+HKR,%SetParamsDef%,	"CornerTapOffsetX",		0x00010001,0x0000004b
+HKR,%SetParamsDef%,	"CornerTapOffsetY",		0x00010001,0x0000004b
+HKR,%SetParamsDef%,	"ScrollWidth_V_Narrow",		0x00010001,0x00000032
+HKR,%SetParamsDef%,	"ScrollWidth_H_Narrow",		0x00010001,0x00000032
+HKR,%SetParamsDef%,	"ScrollWidth_V_Normal",		0x00010001,0x0000004b
+HKR,%SetParamsDef%,	"ScrollWidth_H_Normal",		0x00010001,0x0000004b
+HKR,%SetParamsDef%,	"ScrollWidth_V_Wide",		0x00010001,0x00000064
+HKR,%SetParamsDef%,	"ScrollWidth_H_Wide",		0x00010001,0x00000064
+HKR,%SetParamsDef%,	"PadScrollLines",		0x00010001,0x00000003
+HKR,%SetParamsDef%,	"DoubleClickSpeed",		0x00010001,0x00000226
+HKR,%SetParamsDef%,	"ButtonFunction0",		0x00010001,0x00000005
+HKR,%SetParamsDef%,	"ButtonFunction1",		0x00010001,0x00000005
+HKR,%SetParamsDef%,	"ButtonFunction2",		0x00010001,0x00000004
+HKR,%SetParamsDef%,	"ButtonFunction3",		0x00010001,0x0000000e
+HKR,%SetParamsDef%,	"ButtonFunction8",		0x00010001,0x0000000e
+HKR,%SetParamsDef%,	"SPFunction0",			0x00010001,0x00000005
+HKR,%SetParamsDef%,	"SPFunction1",			0x00010001,0x00000005
+HKR,%SetParamsDef%,	"SPFunction2",			0x00010001,0x00000004
+HKR,%SetParamsDef%,	"SPFunction3",			0x00010001,0x00000010
+HKR,%SetParamsDef%,	"SPFunction8",			0x00010001,0x0000000e
+HKR,%SetParamsDef%,	"MouFunction1",			0x00010001,0x00000005
+HKR,%SetParamsDef%,	"MouFunction2",			0x00010001,0x00000004
+HKR,%SetParamsDef%,	"MouFunction3",			0x00010001,0x0000000e
+HKR,%SetParamsDef%,	"EnableEdgeAction_L",		0x00010001,0x00000000
+HKR,%SetParamsDef%,	"EnableEdgeAction_R",		0x00010001,0x00000000
+HKR,%SetParamsDef%,	"EnableEdgeAction_U",		0x00010001,0x00000000
+HKR,%SetParamsDef%,	"EnableEdgeAction_UL",		0x00010001,0x00000000
+HKR,%SetParamsDef%,	"EnableMultiGesture",		0x00010001,0x00000001
+HKR,%SetParamsDef%,	"EnableInertialMovement",	0x00010001,0x00000001
+;For G9
+HKR,%SetParamsDef%,	"PTPSwitchStatus",		0x00010001,0x00010001
+; For 2F-Pan
+HKR,%SetGesture%,	"PanSupport",			0x00010001,0x00000001
+HKR,%SetGesture%,	"PanFunc",			0x00010001,0x00000001
+HKR,%SetGesture%,	"PanShow",			0x00010001,0x00000001
+HKR,%SetGesture%,	"PanSetting",			0x00010001,0x0000000f
+HKR,%SetParamsDef%,	"PanSetting",			0x00010001,0x0000000f
+HKR,%SetApoint%,	"AdvancedScrollFunc",		0x00010001,0x00000099
+HKR,%SetApoint%,	"InhibitGesWhenInrScr",		0x00010001,0x00000001
+HKR,%SetGesture%,	"AdvancedInertialScrThreshold",	0x00010001,0x00F00008
+HKR,%SetGesture%,	"AdvancedInertialScrDecrement",	0x00010001,0x00000008
+HKR,%SetGesture%,	"AdvancedInertialScrDeltaOffset",	0x00010001,0x00000008
+HKR,%SetGesture%,	"InertialScr_V2_DecDelta",	0x00010001,0x0000000A
+HKR,%SetGesture%, 	"InertialScr_V2_Speed_V",	0x00010001,0x00020001
+HKR,%SetGesture%, 	"InertialScr_V2_Speed_H",	0x00010001,0x00020001
+HKR,%SetButton%,	"InertialScrollSetting",	0x00010001,0x00000003
+HKR,%SetButton%,	"InertialScrollInterval",	0x00010001,0x00000014
+HKR,%SetButton%,	"InertialScrollLimit",		0x00010001,0x0000005a
+HKR,%SetButton%,	"InertialScrollThreshold",	0x00010001,0x0000000A
+HKR,%SetApoint%,	"InvertScrollShow",		0x00010001,0x00000001
+HKR,%SetApoint%,	"InvertScrollFlag",		0x00010001,0x00000003
+HKR,%SetApoint%,	"UseOriginalReverseScrollDirection",		0x00010001,0x00000000
+HKR,%SetParamsDef%,	"InvertScrollFlag",		0x00010001,0x00000003
+HKR,%SetGesture%,	"2FlickSupport",		0x00010001,0x00000002
+HKR,%SetGesture%,	"2FlickThreshold",		0x00010001,0x00000002
+HKR,%SetGesture%,	"2FlickHorFunc",		0x00010001,0x00090009
+HKR,%SetGesture%,	"2FlickVerFunc",		0x00010001,0x00090009
+HKR,%SetGesture%,	"2FlickVerUSetting",		0x00020000,"1"
+HKR,%SetParamsDef%,	"2FlickVerUSetting",		0x00020000,"1"
+HKR,%SetGesture%,	"2FlickVerDSetting",		0x00020000,"1"
+HKR,%SetParamsDef%,	"2FlickVerDSetting",		0x00020000,"1"
+HKR,%SetGesture%,	"2FlickHorLSetting",		0x00020000,"2"
+HKR,%SetParamsDef%,	"2FlickHorLSetting",		0x00020000,"2"
+HKR,%SetGesture%,	"2FlickHorRSetting",		0x00020000,"2"
+HKR,%SetParamsDef%,	"2FlickHorRSetting",		0x00020000,"2"
+HKR,%SetGesture%,	"EnablePan",			0x00010001,0x00000001
+HKR,%SetParamsDef%,	"EnablePan",			0x00010001,0x00000001
+HKR,%SetGesture%,	"Enable2Flick",			0x00010001,0x00000003
+HKR,%SetParamsDef%,	"Enable2Flick",			0x00010001,0x00000003
+; For 2F-Pinch
+HKR,%SetGesture%,	"PinchSupport",			0x00010001,0x00000001
+HKR,%SetGesture%,	"PinchFunc",			0x00010001,0x00000002
+HKR,%SetGesture%,	"PinchShow",			0x00010001,0x00000001
+HKR,%SetApoint%,	"AdvancedZoomFunc",		0x00010001,0x00000011
+HKR,%SetGesture%,	"EnablePinch",			0x00010001,0x00000001
+HKR,%SetGesture%, 	"PinchSetting",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"PinchSetting",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"EnablePinch",			0x00010001,0x00000001
+; For 2F-Rotate
+HKR,%SetGesture%,	"TwistSupport",			0x00010001,0x00000001
+HKR,%SetGesture%,	"TwistFunc",			0x00010001,0x00000003
+HKR,%SetGesture%,	"TwistShow",			0x00010001,0x00000001
+HKR,%SetGesture%,	"EnableTwist",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"EnableTwist",			0x00010001,0x00000000
+; For 3F-Flick
+HKR,%SetGesture%,	"3FlickSupport",		0x00010001,0x00000001
+HKR,%SetGesture%,	"3FlickShow",			0x00010001,0x00000001
+HKR,%SetGesture%,	"3FlickHorFunc",		0x00010001,0x00050006
+HKR,%SetGesture%,	"3FlickVerFunc",		0x00010001,0x00030004
+HKR,%SetGesture%,	"3FlickVerCustom",		0x00010001,0x00000001
+HKR,%SetGesture%,	"Enable3Flick",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"Enable3Flick",			0x00010001,0x00000000
+; For 3F-Press
+HKR,%SetGesture%,	"BlankScreenType",		0x00010001,0x00000001
+HKR,%SetGesture%,	"3PressSupport",		0x00010001,0x00000001
+HKR,%SetGesture%,	"3PressShow",			0x00010001,0x00000003
+HKR,%SetGesture%,	"3PressFunc",			0x00010001,0x0000000B
+HKR,%SetParamsDef%,	"3PressFunc",			0x00010001,0x0000000B
+HKR,%SetGesture%,	"3PressSetting",		0x00010001,0x000000FF
+HKR,%SetGesture%,	"Enable3Press",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"Enable3Press",			0x00010001,0x00000000
+; For 4F-Flick
+HKR,%SetGesture%,	"4FlickSupport",		0x00010001,0x00000001
+HKR,%SetGesture%,	"4FlickShow",			0x00010001,0x00000001
+HKR,%SetGesture%,	"4FlickHorFunc",		0x00010001,0x00100011
+HKR,%SetGesture%,	"4FlickVerFunc",		0x00010001,0x000C0008
+HKR,%SetGesture%,	"4FlickVerCustom",		0x00010001,0x00000001
+HKR,%SetGesture%,	"Enable4Flick",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"Enable4Flick",			0x00010001,0x00000000
+; For 4F-Press
+HKR,%SetGesture%,	"4PressSupport",		0x00010001,0x00000001
+HKR,%SetGesture%,	"4PressShow",			0x00010001,0x00000003
+HKR,%SetGesture%,	"4PressFunc",			0x00010001,0x0000000B
+HKR,%SetParamsDef%,	"4PressFunc",			0x00010001,0x0000000B
+HKR,%SetGesture%,	"4PressSetting",		0x00010001,0x000000FF
+HKR,%SetGesture%,	"Enable4Press",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"Enable4Press",			0x00010001,0x00000000
+; For 2F-Tap
+HKR,%SetGesture%, 	"2TapSupport", 			0x00010001,0x00000001
+HKR,%SetGesture%, 	"Enable2Tap", 			0x00010001,0x00000001
+HKR,%SetParamsDef%, 	"Enable2Tap", 			0x00010001,0x00000001
+HKR,%SetGesture%, 	"2TapFunc", 			0x00010001,0x0000000D
+HKR,%SetParamsDef%, 	"2TapFunc", 			0x00010001,0x0000000D
+; For ZigZag gesture
+HKR,%SetOther%,	"ShowZigZag",			0x00010001,0x00000001
+HKR,%SetOther%,	"EnableZigZag",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"EnableZigZag",			0x00010001,0x00000000
+; For TP On/Off key
+HKR,%SetApoint%,	"TouchPadDisableFunc",		0x00010001,0x00000001
+HKR,%SetApoint%,	"ApMsgFwd_HookFlags",		0x00010001,0x00000000
+HKR,%SetApoint%,	"TPStatusSetFunc",		0x00010001,0x00000001
+HKR,%SetApoint%,	"CustomTPSyncFlags",		0x00010001,0x00000004
+HKR,%SetApoint%,	"ApMsgWaitProcEnableFlg",	0x00010001,0x00000000
+HKR,%SetApoint%,	"TPStatusPriority",		0x00010001,0x00000001
+HKR,%SetApoint%,	"OnOffHotkeyInfo",		0x00010001,0x00000000
+HKR,%SetApoint%,	"TouchPadDisableFlags",		0x00010001,0x00000000
+HKR,%SetApoint%,	"Wait_Initialization",		0x00010001,0x00000001
+HKR,%SetApoint%,	"Wait_Time_Initialization",	0x00010001,0x000003E8
+HKR,%SetApoint%,	"DisableOnOffCmdIfPS2mouse",	0x00010001,0x00000001
+HKR,%SetOther%,	"ShowBalloonTPStatus",		0x00010001,0x00000010
+HKR,%SetOther%,	"DualDevOnOff4Status",		0x00010001,0x00000000
+; For 2F-Click
+HKR,%SetTapping%,	"Enable2Click",			0x00010001,0x00000000
+HKR,%SetParamsDef%,	"Enable2Click",			0x00010001,0x00000000
+; For TouchGuard
+HKR,%SetTouchGuard%,	"SupportTGFingerSize",		0x00010001,0x00000001
+HKR,%SetTouchGuard%,	"TGFingerSize",			0x00010001,0x00000002
+HKR,%SetTouchGuard%,	"CustomTGFingerSize",		0x00000000,"18,20,22,24,26,28,30"
+
+; Sysprep
+HKR,%SetApoint%,		"Sysprep_InstallSupport",		0x00010001,0x00000001
+HKR,%SetApoint%,	"I_am",		0x00000000,"Win?"
+HKR,%SetApoint%,		"Sysprep_InstallFlag",		0x00010001,0x00000000
+
+; Set Parameters (Drivers)
+HKR,%SetApHidMain%,	"NTap_CornerDTapSupport",   		0x00010001,0x00000000
+
+HKR,%SetApHidMain%,	"Cursoring_ISDR_Enable",		0x00010001,0x00000001
+HKR,%SetApHidMain%,	"Cursoring_ISDR_ResolXMin",		0x00010001,0x00000320
+
+HKR,%SetApHidMain%,	"EdgeAction_Angle_Top",   		0x00010001,0x00000032
+HKR,%SetApHidMain%,	"EdgeAction_Angle_Left",   		0x00010001,0x00000032
+HKR,%SetApHidMain%,	"EdgeAction_Angle_Right",   		0x00010001,0x00000032
+HKR,%SetApHidMain%,	"EdgeAction_CharmSelectThresh",   	0x00010001,0x00000007
+HKR,%SetApHidMain%,	"EdgeAction_RightBarSelect",   		0x00010001,0x00000000
+
+HKR,%SetApHidMain%,	"NFlick_RotationEnable",   		0x00010001,0x00000000
+HKR,%SetApHidMain%,	"NFlick_GestureSupport",   		0x00010001,0xffff0000
+HKR,%SetApHidMain%,	"NFlick_2FingerEnable",   		0x00010001,0x00000000
+HKR,%SetApHidMain%,	"NFlick_2FingerMovement",   		0x00010001,0x012c012c
+HKR,%SetApHidMain%,	"NFlick_2FingerReqCount",   		0x00010001,0x00000008
+HKR,%SetApHidMain%,	"NFlick_3FingerEnable",   		0x00010001,0x00000001
+HKR,%SetApHidMain%,	"NFlick_3FingerMovement",   		0x00010001,0x00c800c8
+HKR,%SetApHidMain%,	"NFlick_3FingerReqCount",   		0x00010001,0x00000005
+HKR,%SetApHidMain%,	"NFlick_4FingerEnable",   		0x00010001,0x00000001
+HKR,%SetApHidMain%,	"NFlick_4FingerMovement",   		0x00010001,0x012c012c
+HKR,%SetApHidMain%,	"NFlick_4FingerReqCount",   		0x00010001,0x00000008
+
+HKR,%SetApHidMain%,	"Pinch_CompoundAngleThreshold",   	0x00010001,0x0000002d
+HKR,%SetApHidMain%,	"Rotate_NotifyEnoughCount",   		0x00010001,0x00000001
+HKR,%SetApHidMain%,	"Rotate_CompoundAngleThreshold",   	0x00010001,0x0000002d
+
+HKR,%SetApHidMain%,	"Wheel_ScrollCancelAngleX",   		0x00010001,0x0000001E
+HKR,%SetApHidMain%,	"Wheel_ScrollCancelAngleY",   		0x00010001,0x0000001E
+
+HKR,%SetApHidMain%,	"MGF_EdgeFilter_Setting",   		0x00010001,0x00000003
+HKR,%SetApHidMain%,	"MGF_LidFilter_GuardSetting",		0x00010001,0x00000007
+HKR,%SetApHidMain%,	"ZigZag_Enable",   			0x00010001,0x00000001
+
+; For U1 Std
+HKR,%SetU1Std%,		"Common_TPActiveAreaLengthPhy",		0x00010001,0x00360064	;[54 x 100]
+HKR,%SetU1Std%,		"Common_TPImagePacket",   		0x00010001,0x00000000
+HKR,%SetU1Std%,		"FilterChain_PosJumpThreshUm",		0x00010001,0xffffffff
+HKR,%SetU1Std%,		"FilterChain_PosJumpThresh",		0x00010001,0x03330333
+HKR,%SetU1Std%,		"FilterChain_PosJumpOffset",		0x00010001,0x000001EB
+HKR,%SetU1Std%,		"RestFinger_LargeMoveThresh",  		0x00010001,0x00000050
+HKR,%SetU1Std%,		"RestFinger_UnstableFnAddCnt",		0x00010001,0x00000006
+HKR,%SetU1Std%,		"RestFinger_CornerZoneWidth",		0x00010001,0x00000096
+HKR,%SetU1Std%,		"RestFinger_CornerZoneHeight",		0x00010001,0x000000FA
+HKR,%SetU1Std%,		"TapFilter_2ndTapIntervalZCount",   	0x00010001,0x00000015
+HKR,%SetU1Std%,		"TapFilter_MoveZCount",			0x00010001,0x0000001F
+HKR,%SetU1Std%,		"TapFilter_TapUpZCount",		0x00010001,0x00000006
+HKR,%SetU1Std%,		"TapFilter_XLargeMovement1F",   	0x00010001,0x00000023
+HKR,%SetU1Std%,		"TapFilter_YLargeMovement1F",   	0x00010001,0x00000023
+HKR,%SetU1Std%,		"TapFilter_XLargeMovement2F",   	0x00010001,0x00000018
+HKR,%SetU1Std%,		"TapFilter_YLargeMovement2F",   	0x00010001,0x00000013
+HKR,%SetU1Std%,		"TapFilter_TapSpeedLevel",   		0x00000001,0x38, 0x2C, 0x1F, 0x13
+HKR,%SetU1Std%,		"TapFilter_TouchSensLevel",		0x00000001,	0x04,0x01,0x05,0x01,0x06,0x01,0x07,0x01,0x08,0x01,0x09,0x01,0x0A,0x01,0x0B,0x01,0x0C,0x01,0x00,0x00
+HKR,%SetU1Std%,		"Cursoring_Coef",   			0x00010001,0x000004B0
+HKR,%SetU1Std%,		"Cursoring_MaxThreshold",   		0x00010001,0x00000140
+HKR,%SetU1Std%,		"Cursoring_PacketRate",   		0x00010001,0x00000050
+HKR,%SetU1Std%,		"Cursoring_ISDR_Threshold0",   		0x00010001,0x00001000
+HKR,%SetU1Std%,		"Cursoring_ISDR_Threshold1",   		0x00010001,0x00004000
+HKR,%SetU1Std%,		"Cursoring_CursorKeepThresh",   	0x00010001,0x00000180
+HKR,%SetU1Std%,		"EdgeAction_Angle_Top",   		0x00010001,0x0000001C
+HKR,%SetU1Std%,		"EdgeAction_Angle_Left",   		0x00010001,0x0000001C
+HKR,%SetU1Std%,		"EdgeAction_Angle_Right",   		0x00010001,0x0000001C
+HKR,%SetU1Std%,		"EdgeAction_TopLeftAreaHeight", 	0x00010001,0x0000004C
+HKR,%SetU1Std%,		"EdgeAction_LeftAreaWidth",   		0x00010001,0x0000004C
+HKR,%SetU1Std%,		"EdgeAction_RightAreaWidth",   		0x00010001,0x0000004C
+HKR,%SetU1Std%,		"EdgeAction_TopAreaHeight",   		0x00010001,0x0000004C
+HKR,%SetU1Std%,		"EdgeAction_DeltaThreshold",		0x00010001,0x00000008
+HKR,%SetU1Std%,		"EdgeAction_HorizonDistance",   	0x00010001,0x00000080
+HKR,%SetU1Std%,		"EdgeAction_VerticalDistance",  	0x00010001,0x00000090
+HKR,%SetU1Std%,		"Wheel_AbsScrollXw",   			0x00010001,0x00000096
+HKR,%SetU1Std%,		"Wheel_AbsScrollYw",   			0x00010001,0x00000096
+HKR,%SetU1Std%,		"Wheel_AdvancedGPScrollThreshold",	0x00010001,0x0000000D
+HKR,%SetU1Std%,		"Wheel_HorizontalScrollThreshold",  	0x00010001,0x00000064
+HKR,%SetU1Std%,		"Wheel_VerticalScrollThreshold",   	0x00010001,0x0000001E
+HKR,%SetU1Std%,		"Wheel_ScrollDecideThresholdX",   	0x00010001,0x00000046
+HKR,%SetU1Std%,		"Wheel_ScrollDecideThresholdY",   	0x00010001,0x00000046
+HKR,%SetU1Std%,		"Wheel_ScrollLockEnable",  		0x00010001,0x00000000
+HKR,%SetU1Std%,		"Wheel_SwirlFactorConst",   		0x00010001,0x00000014
+HKR,%SetU1Std%,		"Wheel_SwirlNoise",   			0x00010001,0x000000C8
+HKR,%SetU1Std%,		"Wheel_SwirlThreshX",   		0x00010001,0x00000190
+HKR,%SetU1Std%,		"Wheel_SwirlThreshY",   		0x00010001,0x00000190
+HKR,%SetU1Std%,		"Wheel_WebAssistBThreshold",   		0x00010001,0xFFFFFF9C
+HKR,%SetU1Std%,		"Wheel_WebAssistFThreshold",   		0x00010001,0x00000064
+HKR,%SetU1Std%,		"NFlick_2FingerMovement",   		0x00010001,0x00800080
+HKR,%SetU1Std%,		"NFlick_3FingerMovement",   		0x00010001,0x00800080
+HKR,%SetU1Std%,		"NFlick_4FingerMovement",   		0x00010001,0x00800080
+HKR,%SetU1Std%,		"NFlick_2FingerReqCount",		0x00010001,0x0000000C
+HKR,%SetU1Std%,		"NFlick_3FingerReqCount",		0x00010001,0x0000000C
+HKR,%SetU1Std%,		"NFlick_4FingerReqCount",		0x00010001,0x0000000C
+HKR,%SetU1Std%,		"NPress_CountThresh",   		0x00010001,0x00000014
+HKR,%SetU1Std%,		"NPress_SizeThresh",   			0x00010001,0x000000C8
+HKR,%SetU1Std%,		"NPan_InitMove",   			0x00010001,0x0028003C
+HKR,%SetU1Std%,		"NPan_InitMove3Finger",   		0x00010001,0x00320032
+HKR,%SetU1Std%,		"NPan_InitMove4Finger",   		0x00010001,0x002E002E
+HKR,%SetU1Std%,		"NPan_Resolution",			0x00010001,0x00080008
+HKR,%SetU1Std%,		"NPan_Resolution3Finger",		0x00010001,0x00300030
+HKR,%SetU1Std%,		"NPan_SizeChange",   			0x00010001,0x007F007F
+HKR,%SetU1Std%,		"Pinch_InitMove",   			0x00010001,0x000000A0
+HKR,%SetU1Std%,		"Pinch_Resolution",   			0x00010001,0x00000013
+HKR,%SetU1Std%,		"Pinch_PlantMove",   			0x00010001,0x00000090
+HKR,%SetU1Std%,		"Rotate_InitMove",   			0x00010001,0x0000008C
+HKR,%SetU1Std%,		"Rotate_PlantMove",   			0x00010001,0x00000090
+HKR,%SetU1Std%,		"NTap_CornerWidthX",   			0x00010001,0x000000C0
+HKR,%SetU1Std%,		"NTap_CornerWidthY",   			0x00010001,0x000000C0
+HKR,%SetU1Std%,		"NTap_CornerWidthXEx",   		0x00010001,0x00000008
+HKR,%SetU1Std%,		"NTap_CornerWidthYEx",   		0x00010001,0x00000008
+HKR,%SetU1Std%,		"NTap_2FnDistanceThreshold",   		0x00010001,0x00000400
+HKR,%SetU1Std%,		"NTap_3FnDistanceThreshold",   		0x00010001,0x00000600
+HKR,%SetU1Std%,		"NTap_4FnDistanceThreshold",   		0x00010001,0x00001000
+HKR,%SetU1Std%,		"NTap_DoubleTapLargeMovementX",  	0x00010001,0x00000168
+HKR,%SetU1Std%,		"NTap_DoubleTapLargeMovementY",   	0x00010001,0x00000168
+HKR,%SetU1Std%,		"NTap_TapDragLargeMovementX",  		0x00010001,0x00000168
+HKR,%SetU1Std%,		"NTap_TapDragLargeMovementY",   	0x00010001,0x00000168
+HKR,%SetU1Std%,		"ZigZag_init_period",			0x00010001,0x00000016
+HKR,%SetU1Std%,		"ZigZag_next_period",			0x00010001,0x0000002E
+HKR,%SetU1Std%,		"Button_LargeMoveThresh",   		0x00010001,0x00000064
+HKR,%SetU1Std%,		"Button_PTP2FnClickTimeout",   		0x00010001,0x00000032
+HKR,%SetU1Std%,		"MGF_EdgeFilter_HL",   			0x00010001,0x000000A0
+HKR,%SetU1Std%,		"MGF_EdgeFilter_VT",   			0x00010001,0x000000A0
+HKR,%SetU1Std%,		"MGF_EdgeFilter_HR",   			0x00010001,0x000000A0
+HKR,%SetU1Std%,		"MGF_EdgeActFilter_TopEdge",   		0x00010001,0x0000004C
+HKR,%SetU1Std%,		"MGF_EdgeActFilter_LeftEdge",   	0x00010001,0x0000004C
+HKR,%SetU1Std%,		"MGF_EdgeActFilter_RightEdge",   	0x00010001,0x0000004C
+HKR,%SetU1Std%,		"MGF_EdgeActFilter_DistanceCnt",   	0x00010001,0x00000280
+HKR,%SetU1Std%,		"MGF_ClsFnFilter_Pattern",   		0x00010001,0x00000001
+HKR,%SetU1Std%,		"MGF_ClsFnFilter_Setting",   		0x00010001,0x00000002
+HKR,%SetU1Std%,		"MGF_ClsFnFilter_CloseThresh",   	0x00010001,0x00000180
+HKR,%SetU1Std%,		"MGF_ClsFnFilter_MoveReleaseThresh",	0x00010001,0x00000100
+HKR,%SetU1Std%,		"MGF_TGDFilter_TapReenable_FnLock", 	0x00010001,0x00000000
+HKR,%SetU1Std%,		"Misc_PalmReject_Edge_Left",		0x00010001,0x00000002
+HKR,%SetU1Std%,		"Misc_PalmReject_Edge_Right",		0x00010001,0x00000002
+HKR,%SetU1Std%,		"Misc_PalmReject_Edge_Top",		0x00010001,0x00000002
+HKR,%SetU1Std%,		"Misc_PalmReject_Edge_LF",		0x00010001,0x00000013
+HKR,%SetU1Std%,		"Misc_TouchSens_TouchSensSettings",	0x00010001,0x0000000B
+
+; For U1 Btl
+HKR,%SetU1Btl%,		"Common_TPActiveAreaLengthPhy",		0x00010001,0x00360064	;[54 x 100]
+HKR,%SetU1Btl%,		"Common_TPImagePacket",   		0x00010001,0x00000000
+HKR,%SetU1Btl%,		"FilterChain_PosJumpThreshUm",		0x00010001,0xffffffff
+HKR,%SetU1Btl%,		"FilterChain_PosJumpThresh",		0x00010001,0x03330333
+HKR,%SetU1Btl%,		"FilterChain_PosJumpOffset",		0x00010001,0x000001EB
+HKR,%SetU1Btl%,		"RestFinger_LargeMoveThresh",  		0x00010001,0x00000050
+HKR,%SetU1Btl%,		"RestFinger_UnstableFnAddCnt",		0x00010001,0x00000006
+HKR,%SetU1Btl%,		"RestFinger_CornerZoneWidth",		0x00010001,0x00000096
+HKR,%SetU1Btl%,		"RestFinger_CornerZoneHeight",		0x00010001,0x000000FA
+HKR,%SetU1Btl%,		"TapFilter_2ndTapIntervalZCount",	0x00010001,0x00000015
+HKR,%SetU1Btl%,		"TapFilter_MoveZCount",			0x00010001,0x0000001F
+HKR,%SetU1Btl%,		"TapFilter_TapUpZCount",		0x00010001,0x00000006
+HKR,%SetU1Btl%,		"TapFilter_XLargeMovement1F",   	0x00010001,0x00000023
+HKR,%SetU1Btl%,		"TapFilter_YLargeMovement1F",   	0x00010001,0x00000023
+HKR,%SetU1Btl%,		"TapFilter_XLargeMovement2F",   	0x00010001,0x00000018
+HKR,%SetU1Btl%,		"TapFilter_YLargeMovement2F",   	0x00010001,0x00000013
+HKR,%SetU1Btl%,		"TapFilter_TapSpeedLevel",   		0x00000001,0x38,0x2C,0x1F,0x13
+HKR,%SetU1Btl%,		"TapFilter_TouchSensLevel",		0x00000001,0x04,0x0F,0x05,0x0D,0x06,0x0B,0x07,0x09,0x08,0x08,0x09,0x06,0x0A,0x05,0x0B,0x03,0x0C,0x01,0x00,0x00
+HKR,%SetU1Btl%,		"Cursoring_Coef",   			0x00010001,0x000004B0
+HKR,%SetU1Btl%,		"Cursoring_MaxThreshold",   		0x00010001,0x00000140
+HKR,%SetU1Btl%,		"Cursoring_PacketRate",   		0x00010001,0x00000050
+HKR,%SetU1Btl%,		"Cursoring_ISDR_Threshold0",   		0x00010001,0x00001000
+HKR,%SetU1Btl%,		"Cursoring_ISDR_Threshold1",   		0x00010001,0x00004000
+HKR,%SetU1Btl%,		"Cursoring_CursorKeepThresh",   	0x00010001,0x00000180
+HKR,%SetU1Btl%,		"EdgeAction_Angle_Top",   		0x00010001,0x0000001C
+HKR,%SetU1Btl%,		"EdgeAction_Angle_Left",   		0x00010001,0x0000001C
+HKR,%SetU1Btl%,		"EdgeAction_Angle_Right",   		0x00010001,0x0000001C
+HKR,%SetU1Btl%,		"EdgeAction_TopLeftAreaHeight", 	0x00010001,0x0000004C
+HKR,%SetU1Btl%,		"EdgeAction_LeftAreaWidth",   		0x00010001,0x0000004C
+HKR,%SetU1Btl%,		"EdgeAction_RightAreaWidth",   		0x00010001,0x0000004C
+HKR,%SetU1Btl%,		"EdgeAction_TopAreaHeight",   		0x00010001,0x0000004C
+HKR,%SetU1Btl%,		"EdgeAction_DeltaThreshold",		0x00010001,0x00000008
+HKR,%SetU1Btl%,		"EdgeAction_HorizonDistance",   	0x00010001,0x00000080
+HKR,%SetU1Btl%,		"EdgeAction_VerticalDistance",  	0x00010001,0x00000090
+HKR,%SetU1Btl%,		"Wheel_AbsScrollXw",   			0x00010001,0x00000096
+HKR,%SetU1Btl%,		"Wheel_AbsScrollYw",   			0x00010001,0x00000096
+HKR,%SetU1Btl%,		"Wheel_AdvancedGPScrollThreshold",  	0x00010001,0x0000000D
+HKR,%SetU1Btl%,		"Wheel_HorizontalScrollThreshold",	0x00010001,0x00000064
+HKR,%SetU1Btl%,		"Wheel_VerticalScrollThreshold",   	0x00010001,0x0000001E
+HKR,%SetU1Btl%,		"Wheel_ScrollDecideThresholdX",   	0x00010001,0x00000046
+HKR,%SetU1Btl%,		"Wheel_ScrollDecideThresholdY",   	0x00010001,0x00000046
+HKR,%SetU1Btl%,		"Wheel_ScrollLockEnable",  		0x00010001,0x00000000
+HKR,%SetU1Btl%,		"Wheel_SwirlFactorConst",   		0x00010001,0x00000014
+HKR,%SetU1Btl%,		"Wheel_SwirlNoise",   			0x00010001,0x000000C8
+HKR,%SetU1Btl%,		"Wheel_SwirlThreshX",   		0x00010001,0x00000190
+HKR,%SetU1Btl%,		"Wheel_SwirlThreshY",   		0x00010001,0x00000190
+HKR,%SetU1Btl%,		"Wheel_WebAssistBThreshold",   		0x00010001,0xFFFFFF9C
+HKR,%SetU1Btl%,		"Wheel_WebAssistFThreshold",   		0x00010001,0x00000064
+HKR,%SetU1Btl%,		"NFlick_2FingerMovement",   		0x00010001,0x00800080
+HKR,%SetU1Btl%,		"NFlick_3FingerMovement",   		0x00010001,0x00800080
+HKR,%SetU1Btl%,		"NFlick_4FingerMovement",   		0x00010001,0x00800080
+HKR,%SetU1Btl%,		"NFlick_2FingerReqCount",		0x00010001,0x0000000C
+HKR,%SetU1Btl%,		"NFlick_3FingerReqCount",		0x00010001,0x0000000C
+HKR,%SetU1Btl%,		"NFlick_4FingerReqCount",		0x00010001,0x0000000C
+HKR,%SetU1Btl%,		"NPress_CountThresh",   		0x00010001,0x00000014
+HKR,%SetU1Btl%,		"NPress_SizeThresh",   			0x00010001,0x000000C8
+HKR,%SetU1Btl%,		"NPan_InitMove",   			0x00010001,0x0028003C
+HKR,%SetU1Btl%,		"NPan_InitMove3Finger",   		0x00010001,0x00320032
+HKR,%SetU1Btl%,		"NPan_InitMove4Finger",   		0x00010001,0x002E002E
+HKR,%SetU1Btl%,		"NPan_Resolution",			0x00010001,0x00080008
+HKR,%SetU1Btl%,		"NPan_Resolution3Finger",		0x00010001,0x00300030
+HKR,%SetU1Btl%,		"NPan_SizeChange",   			0x00010001,0x007F007F
+HKR,%SetU1Btl%,		"Pinch_InitMove",   			0x00010001,0x000000A0
+HKR,%SetU1Btl%,		"Pinch_Resolution",   			0x00010001,0x00000013
+HKR,%SetU1Btl%,		"Pinch_PlantMove",   			0x00010001,0x00000090
+HKR,%SetU1Btl%,		"Rotate_InitMove",   			0x00010001,0x0000008C
+HKR,%SetU1Btl%,		"Rotate_PlantMove",   			0x00010001,0x00000090
+HKR,%SetU1Btl%,		"NTap_CornerWidthX",   			0x00010001,0x000000C0
+HKR,%SetU1Btl%,		"NTap_CornerWidthY",   			0x00010001,0x000000C0
+HKR,%SetU1Btl%,		"NTap_CornerWidthXEx",   		0x00010001,0x00000008
+HKR,%SetU1Btl%,		"NTap_CornerWidthYEx",   		0x00010001,0x00000008
+HKR,%SetU1Btl%,		"NTap_2FnDistanceThreshold",   		0x00010001,0x00000400
+HKR,%SetU1Btl%,		"NTap_3FnDistanceThreshold",   		0x00010001,0x00000600
+HKR,%SetU1Btl%,		"NTap_4FnDistanceThreshold",   		0x00010001,0x00001000
+HKR,%SetU1Btl%,		"NTap_DoubleTapLargeMovementX",  	0x00010001,0x00000168
+HKR,%SetU1Btl%,		"NTap_DoubleTapLargeMovementY",   	0x00010001,0x00000168
+HKR,%SetU1Btl%,		"NTap_TapDragLargeMovementX",  		0x00010001,0x00000168
+HKR,%SetU1Btl%,		"NTap_TapDragLargeMovementY",   	0x00010001,0x00000168
+HKR,%SetU1Btl%,		"ZigZag_init_period",			0x00010001,0x00000016
+HKR,%SetU1Btl%,		"ZigZag_next_period",			0x00010001,0x0000002E
+HKR,%SetU1Btl%,		"Button_LargeMoveThresh",   		0x00010001,0x00000064
+HKR,%SetU1Btl%,		"Button_PTP2FnClickTimeout",   		0x00010001,0x00000032
+HKR,%SetU1Btl%,		"MGF_EdgeFilter_HL",   			0x00010001,0x000000A0
+HKR,%SetU1Btl%,		"MGF_EdgeFilter_VT",   			0x00010001,0x000000A0
+HKR,%SetU1Btl%,		"MGF_EdgeFilter_HR",   			0x00010001,0x000000A0
+HKR,%SetU1Btl%,		"MGF_EdgeActFilter_TopEdge",   		0x00010001,0x0000004C
+HKR,%SetU1Btl%,		"MGF_EdgeActFilter_LeftEdge",   	0x00010001,0x0000004C
+HKR,%SetU1Btl%,		"MGF_EdgeActFilter_RightEdge",   	0x00010001,0x0000004C
+HKR,%SetU1Btl%,		"MGF_EdgeActFilter_DistanceCnt",   	0x00010001,0x00000280
+HKR,%SetU1Btl%,		"MGF_ClsFnFilter_CloseThresh",   	0x00010001,0x00000180
+HKR,%SetU1Btl%,		"MGF_ClsFnFilter_MoveReleaseThresh",	0x00010001,0x00000100
+HKR,%SetU1Btl%,		"MGF_TGDFilter_TapReenable_FnLock",	0x00010001,0x00000000
+HKR,%SetU1Btl%,		"Misc_PalmReject_Edge_Left",		0x00010001,0x00000002
+HKR,%SetU1Btl%,		"Misc_PalmReject_Edge_Right",		0x00010001,0x00000002
+HKR,%SetU1Btl%,		"Misc_PalmReject_Edge_Top",		0x00010001,0x00000002
+HKR,%SetU1Btl%,		"Misc_PalmReject_Edge_LF",		0x00010001,0x00000013
+HKR,%SetU1Btl%,		"Misc_TouchSens_TouchSensSettings", 	0x00010001,0x0000000B
+
+
+; [MouFilter_Inst_W10.AddReg]
+HKR,%SetApointWin10%,	"I_am",		0x00000000,"Win10"
+HKR,%SetApointWin10%,		"Sysprep_InstallFlag",		0x00010001,0x00000001
+
+HKR,%SetEdgeActionWin10%,	"SupportEdgeAction",		0x00010001,0x00000000
+; Win10 setting
+HKR,%SetEdgeActionWin10%,	"EdgeActionShow",		0x00010001,0x0000000C
+HKR,%SetEdgeActionWin10%,	"EnableEdgeAction_L",		0x00010001,0x00000000
+HKR,%SetEdgeActionWin10%,	"EnableEdgeAction_R",		0x00010001,0x00000000
+HKR,%SetEdgeActionWin10%,	"EnableEdgeAction_U",		0x00010001,0x00000000
+HKR,%SetEdgeActionWin10%,	"EnableEdgeAction_UL",		0x00010001,0x00000000
+HKR,%SetEdgeActionWin10%,	"MoveCursorEA_R",		0x00010001,0x00000001
+HKR,%SetEdgeActionWin10%,	"FuncTypeEA_L",			0x00010001,0x00000001
+; WIn10 default
+HKR,%SetParamsDefWin10%,	"EdgeActionShow",		0x00010001,0x0000000C
+HKR,%SetParamsDefWin10%,	"EnableEdgeAction_L",		0x00010001,0x00000000
+HKR,%SetParamsDefWin10%,	"EnableEdgeAction_R",		0x00010001,0x00000000
+HKR,%SetParamsDefWin10%,	"EnableEdgeAction_U",		0x00010001,0x00000000
+HKR,%SetParamsDefWin10%,	"EnableEdgeAction_UL",		0x00010001,0x00000000
+HKR,%SetParamsDefWin10%,	"MoveCursorEA_R",		0x00010001,0x00000001
+HKR,%SetParamsDefWin10%,	"FuncTypeEA_L",			0x00010001,0x00000001
+; Win10 setting
+HKR,%SetGestureWin10%,	"AdjScroll_Metro",		0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"AdjScrollSpeed_Photos",	0x00010001,0x00000003
+HKR,%SetGestureWin10%,	"3FlickSupport",		0x00010001,0x00000000
+HKR,%SetGestureWin10%,	"3FlickHorFunc",		0x00010001,0x000A000B
+HKR,%SetGestureWin10%,	"3FlickVerFunc",		0x00010001,0x001B0008
+HKR,%SetGestureWin10%,	"Enable3Flick",			0x00010001,0x00000003
+HKR,%SetGestureWin10%,	"3PanSupport",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"Enable3Pan",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"3PanFunc",			0x00010001,0x00000010
+HKR,%SetGestureWin10%,	"3PanSetting",			0x00010001,0x01010101
+HKR,%SetGestureWin10%,	"Enable3Press",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"3PressFunc",			0x00010001,0x0000000D
+HKR,%SetGestureWin10%,	"4FlickSupport",		0x00010001,0x00000000
+HKR,%SetGestureWin10%,	"Enable4Press",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"4PressFunc",			0x00010001,0x0000000E
+
+HKR,%SetGestureWin10%,	"4PanSupport",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"Enable4Pan",			0x00010001,0x00000001
+HKR,%SetParamsDefWin10%,	"Enable4Pan",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"4PanFunc",				0x00010001,0x00000014
+HKR,%SetGestureWin10%,	"4PanSetting",			0x00010001,0x01010000
+
+; For 3/4 Finger quick launch
+; 0-Reserve 1-Tap 2-Press (Tap and hold) 3-Click Other-Reserve
+HKR,%SetGestureWin10%,	"3FingerQuickLaunchGesture", 0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"4FingerQuickLaunchGesture", 0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"3TapSupport",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"Enable3Tap",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"4TapSupport",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"Enable4Tap",			0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"3ClickSupport",		0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"Enable3Click",			0x00010001,0x00000000
+HKR,%SetGestureWin10%,	"4ClickSupport",		0x00010001,0x00000001
+HKR,%SetGestureWin10%,	"Enable4Click",			0x00010001,0x00000000
+
+HKR,%SetParamsDefWin10%,	"Enable3Flick",			0x00010001,0x00000003
+HKR,%SetParamsDefWin10%,	"3FlickVerFunc",		0x00010001,0x001B0008
+HKR,%SetParamsDefWin10%,	"Enable3Pan",			0x00010001,0x00000001
+HKR,%SetParamsDefWin10%,	"3PanSetting",			0x00010001,0x01010101
+HKR,%SetParamsDefWin10%,	"Enable3Press",			0x00010001,0x00000001
+HKR,%SetParamsDefWin10%,	"3PressFunc",			0x00010001,0x0000000D
+HKR,%SetParamsDefWin10%,	"Enable4Press",			0x00010001,0x00000001
+HKR,%SetParamsDefWin10%,	"4PressFunc",			0x00010001,0x0000000E
+HKR,%SetApointWin10%,	"SupportWindowsSearch",		0x00010001,0x00000001
+
+
+;-------------- Custom Settings
+[HidFilter_Inst_Dell_G9_01.AddReg]
+HKR,%SetU1Btl%,		"Common_TPActiveAreaLengthPhy",	0x00010001,0x00320064	;[50 x 100]
+HKR,%SetU1Std%,		"Common_TPActiveAreaLengthPhy",	0x00010001,0x00320064	;[50 x 100]
+
+[HidFilter_Inst_Dell_G9_02.AddReg]
+HKR,%SetU1Btl%,		"Common_TPActiveAreaLengthPhy",	0x00010001,0x00350064	;[53 x 100]
+HKR,%SetU1Std%,		"Common_TPActiveAreaLengthPhy",	0x00010001,0x00350064	;[53 x 100]
+
+[HidFilter_Inst_Dell_G9_03.AddReg]
+HKR,%SetU1Btl%,		"Common_TPActiveAreaLengthPhy",	0x00010001,0x0032005A	;[50 x 90]
+HKR,%SetU1Std%,		"Common_TPActiveAreaLengthPhy",	0x00010001,0x0032005A	;[50 x 90]
+
+
+[DriverInfoAddReg]
+; This section is added to all INFs to add registry entries for Driver Info.
+HKR,Software\InstalledOptions\%DriverOEM%\%DriverFamily%\%DriverMfgr%\%DriverProduct%,	Description,,		%DriverDescription%
+HKR,Software\InstalledOptions\%DriverOEM%\%DriverFamily%\%DriverMfgr%\%DriverProduct%,	CurrentVer,,		%DriverOEMVersion%
+HKR,Software\InstalledOptions\%DriverOEM%\%DriverFamily%\%DriverMfgr%\%DriverProduct%,	Ver_%DriverOEMVersion%,,%DriverVersionID%
+HKR,Software\InstalledOptions\%DriverOEM%\%DriverFamily%\%DriverMfgr%\%DriverProduct%,	BaseDriverFileName,,	""
+HKR,Software\InstalledOptions\%DriverOEM%\%DriverFamily%\%DriverMfgr%\%DriverProduct%,	BaseDriverFileVersion,,	""
+
+
+HKR,SOFTWARE\Dell\MUP\Alps,CurrentVer,,%DriverVersionID%
+HKR,SOFTWARE\Dell\MUP\Alps,Description,,%DriverDescription%
+
+
+;-------------- Service information installation
+[filter_Service_Inst]
+DisplayName	= %HidFilter.SvcDesc%
+ServiceType	= 1			; SERVICE_KERNEL_DRIVER
+StartType	= 3			; SERVICE_DEMAND_START
+ErrorControl	= 1			; SERVICE_ERROR_NORMAL
+LoadOrderGroup	= Pointer Port
+ServiceBinary	= %12%\ApHidfiltrSW.sys
+DelReg		= Service_DelReg
+
+[HidMonitor_Service_Inst]
+DisplayName	= %HidMonitor.SvcDisp%
+Description	= %HidMonitor.SvcDesc%
+ServiceType	= 0x00000010		; SERVICE_WIN32_OWN_PROCESS
+StartType	= 2			; SERVICE_AUTO_START
+ErrorControl	= 1			; SERVICE_ERROR_NORMAL
+ServiceBinary	= %%SystemRoot%%\system32\%Apoint_Path%\HidMonitorSvc.exe
+
+[Service_DelReg]
+HKR,Parameters
+
+[HidFilter_Inst_wdfsect]
+KmdfLibraryVersion = 1.11
+
+; Source file information
+; ---------------------------------------------------
+[SourceDisksNames]
+1 = %DiskID%,,,
+
+[SourceDisksFiles]
+ApHidfiltrSW.sys	= 1,,
+Vxdif.dll	= 1,,
+Apoint.exe	= 1,,
+ApRemote.exe = 1,,
+ApntEx.exe	= 1,,
+Apoint.dll	= 1,,
+EzAuto.dll	= 1,,
+Elprop.dll	= 1,,
+hidfind.exe	= 1,,
+ApMsgFwd.exe	= 1,,
+ApMouCpl.dll	= 1,,
+DellTPad.exe	= 1,,
+HidMonitorSvc.exe	= 1,,
+ApSearch.dll		= 1,,
+ApTaskLink.xml		= 1,,
+ApClose.exe   = 1,,
+Uninstap.exe  = 1,,
+Uninstaller.exe  = 1,,
+
+; ------------- Localizable strings ------------------------
+[Strings]
+Provider		= "AlpsAlpine"
+Mfg.Desc		= "ALPSALPINE"
+
+HidFilter.SvcDesc	= "AlpsAlpine I2C HID Device Filter Driver"
+Apoint.DeviceDesc 	= "Dell Touchpad"
+DiskID			= "AlpsAlpine Touch Pad Filter Driver for Windows Setup Disk"
+
+HidMonitor.SvcDisp	= "AlpsAlpine HID Monitor Service"		; Service Name
+HidMonitor.SvcDesc	= "Monitor HID device for AlpsAlpine"		; Service Description
+
+; Installation folders
+Apoint_Path		= "DellTPad"
+Path_Data_Cur		= "DellTPad\Data\Cur"
+Cursor_DataPath		= "Data\\Cur"
+
+; Registry Strings
+; Default
+SetApoint		= "Software\Alps\Apoint"
+SetSelectDev		= "Software\Alps\Apoint\SelectDevice"
+SetExceptions		= "Software\Alps\Apoint\Exceptions"
+SetParamsDef		= "Software\Alps\Apoint\Params\Default"
+SetButton		= "Software\Alps\Apoint\Button"
+SetOrientation		= "Software\Alps\Apoint\Orientation"
+SetTapping		= "Software\Alps\Apoint\Tapping"
+SetGesture		= "Software\Alps\Apoint\Gesture"
+SetStick		= "Software\Alps\Apoint\Stick"
+SetOther		= "Software\Alps\Apoint\Other"
+SetIM			= "Software\Alps\Apoint\InertialMovement"
+SetUSBMouse		= "Software\Alps\Apoint\USBMouse"
+SetUSBMouseExcept	= "Software\Alps\Apoint\USBMouse\Exceptions"
+SetEdgeAction		= "Software\Alps\Apoint\EdgeAction"
+SetTouchGuard		= "Software\Alps\Apoint\TouchGuard"
+SetApHidMain		= "APHF"
+SetU1Std		= "APHF\U1S"
+SetU1Btl		= "APHF\U1B"
+
+; Win10
+SetApointWin10		= "Software\Alps\Win10\Apoint"
+SetSelectDevWin10		= "Software\Alps\Win10\Apoint\SelectDevice"
+SetExceptionsWin10		= "Software\Alps\Win10\Apoint\Exceptions"
+SetParamsDefWin10		= "Software\Alps\Win10\Apoint\Params\Default"
+SetButtonWin10		= "Software\Alps\Win10\Apoint\Button"
+SetOrientationWin10		= "Software\Alps\Win10\Apoint\Orientation"
+SetTappingWin10		= "Software\Alps\Win10\Apoint\Tapping"
+SetGestureWin10		= "Software\Alps\Win10\Apoint\Gesture"
+SetStickWin10		= "Software\Alps\Win10\Apoint\Stick"
+SetOtherWin10		= "Software\Alps\Win10\Apoint\Other"
+SetIMWin10			= "Software\Alps\Win10\Apoint\InertialMovement"
+SetUSBMouseWin10		= "Software\Alps\Win10\Apoint\USBMouse"
+SetUSBMouseExceptWin10	= "Software\Alps\Win10\Apoint\USBMouse\Exceptions"
+SetEdgeActionWin10		= "Software\Alps\Win10\Apoint\EdgeAction"
+SetTouchGuardWin10		= "Software\Alps\Win10\Apoint\TouchGuard"
+
+
+RUN			= "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+UNINST			= "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{9F72EF8B-AEC9-4CA5-B483-143980AFD6FD}"
+SHELLPROP		= "Software\Microsoft\Windows\CurrentVersion\Controls Folder\Mouse\shellex\PropertySheetHandlers"
+SHELLPROP_CP		= "Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel\NameSpace"
+
+APOINT_GUID		= "{7F5B8FA4-BEEC-11cf-9BD7-B76592786C03}"
+APMOUCPL_GUID		= "{D0B6E6C2-3485-42E8-A26E-3E3735B240B6}"
+
+ProductVersion		= "Version 10.3201.101.216"
+
+;/* Dell Driver Information History */
+DriverMfgr		= "ALPSALPINE"
+DriverVersionID		= "10.3201.101.216"
+
+DriverOEM		= "ALPSALPINE"		; name of the OEM
+DriverFamily		= "Mouse"			; device family (NIC, Storage, Video...)
+DriverProduct		= "Touch Pad"			; Specific Name of device (chipset, for example)
+DriverDescription	= "AlpsAlpine Pointing-device Driver"	; Description of device (product name, OS or system supported)
+DriverOEMVersion	= "10.3201.101.216"		; OEM-specified version

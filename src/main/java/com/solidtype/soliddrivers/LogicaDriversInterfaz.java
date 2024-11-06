@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import javax.swing.JProgressBar;
 /**
  *
  * @author adder
@@ -15,8 +16,10 @@ public class LogicaDriversInterfaz implements LogicaDrivers {
     
     private Funciones_windows helper = new Funciones_windows();
     private InfoEntity thisPC;
-    public LogicaDriversInterfaz(){
+    private JProgressBar progress;
+    public LogicaDriversInterfaz(JProgressBar progress){
         this.thisPC = getInfo();
+        this.progress = progress;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class LogicaDriversInterfaz implements LogicaDrivers {
 
     @Override
     public void instalarDrivers() {
-        helper.installDrivers(this.thisPC.getModelo());
+        helper.installDrivers(this.thisPC.getModelo(),this.progress );
     }
 
     @Override

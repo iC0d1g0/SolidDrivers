@@ -36,6 +36,7 @@ public class DriversManager {
     
     public void iniciar(){
         installDrivers(this.folderName);
+        
         for(Thread install :installers){
             install.start();
         }
@@ -74,11 +75,18 @@ public class DriversManager {
             paths.filter(Files::isRegularFile) // Filtra solo archivos
                 .filter(path -> path.toString().toLowerCase().endsWith(".inf")) // Filtra archivos .inf
                 .forEach(path -> agregarDrivers(new Drivers(path))); // Usar expresión lambda en lugar de referencia de método
-            System.out.println("en la cola"+ cola.element().getDriver());
-            System.out.println("tamanio : "+ cola.size());
+       
         } catch (IOException e) {
             System.err.println("Error al recorrer la carpeta: " + driversPath.toAbsolutePath());
             e.printStackTrace();
         }
+    }
+    
+     public synchronized int getQueueSize() {
+        return cola.size();
+    }
+
+    public synchronized boolean isQueueEmpty() {
+        return cola.isEmpty();
     }
 }
