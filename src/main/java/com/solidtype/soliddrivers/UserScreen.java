@@ -121,6 +121,7 @@ public class UserScreen extends javax.swing.JFrame {
 
         consola.setBackground(new java.awt.Color(102, 102, 102));
         consola.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        consola.setEditable(false);
         consola.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         consola.setForeground(new java.awt.Color(255, 255, 255));
 

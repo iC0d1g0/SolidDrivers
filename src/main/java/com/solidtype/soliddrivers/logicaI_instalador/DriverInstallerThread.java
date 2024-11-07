@@ -20,7 +20,6 @@ public class DriverInstallerThread implements Runnable {
     }
     
  
-
     @Override
     public void run() {
         try {
@@ -31,18 +30,18 @@ public class DriverInstallerThread implements Runnable {
                 System.out.println("EL QUEUE DEBE DE ESTAR VACIO++++++++++++++++++++++");
                 return;
             }
-            System.out.println("Empieza con driver " + driver.getDriver() + "en el hilo:" + installerName );
+            this.manager.setPrintText("ruta: " + driver.getDriver());
             installDriver(driver.getDriver());
-            Thread.sleep(2000);
-            System.out.println("Termine con:" + driver + "en el hilo:" + installerName );
+            //Thread.sleep(1000);
+            this.manager.setPrintText("Estado : Iniciando....");
         }
             
         } catch (InterruptedException ex) {
-            System.out.println("error en thread : " + ex.getMessage());
+           this.manager.setPrintText("error en thread : " + ex.getMessage());
         }
     }
      public void installDriver(Path infFilePath) {
-        System.out.println("Instalando driver: " + infFilePath.toAbsolutePath());
+          this.manager.setPrintText("proceso : Instalando, wait...");
             
             String rutaBatch = checkAndCreateBatchFile();
 
@@ -61,10 +60,11 @@ public class DriverInstallerThread implements Runnable {
             }
             
             process.waitFor(20, TimeUnit.MINUTES);
+            this.manager.setPrintText("Instalacion : Completa...\n");
 
         } catch (IOException | InterruptedException e) {
-            System.err.println("Error al ejecutar pnputil para el archivo: " + infFilePath.getFileName());
-            e.printStackTrace();
+            this.manager.setPrintText("Error al ejecutar pnputil para el archivo: " + infFilePath.getFileName());
+           
             Thread.currentThread().interrupt();  // Restaura el estado de interrupción
         }
     }

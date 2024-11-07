@@ -27,6 +27,8 @@ public class DriversManager {
     Object lock = new Object();
     private Thread[] installers;
     
+    private int cantidadDrivers;
+    
     public DriversManager(String folderName, TextArea console){
         this.console = console;
         installers = new Thread[DRIVERS_INSTALLERS];
@@ -57,11 +59,11 @@ public class DriversManager {
     public Drivers obtenerDriver() throws InterruptedException{
         synchronized(lock){
             while(cola.isEmpty()){
-                System.out.println("La cola esta bacia " + cola.size());
-              
+                this.console.append("Driver restantes :" + cola.size() + "/" + this.cantidadDrivers);
                 lock.wait();
             }
         }
+        this.console.append("Driver restantes :" + cola.size() + "/" + this.cantidadDrivers +"\n");
         return cola.poll();
     }
     
@@ -79,9 +81,10 @@ public class DriversManager {
             paths.filter(Files::isRegularFile) // Filtra solo archivos
                 .filter(path -> path.toString().toLowerCase().endsWith(".inf")) // Filtra archivos .inf
                 .forEach(path -> agregarDrivers(new Drivers(path))); // Usar expresión lambda en lugar de referencia de método
-       
-        } catch (IOException e) {
-            System.err.println("Error al recorrer la carpeta: " + driversPath.toAbsolutePath());
+              
+            this.cantidadDrivers = this.cola.size();
+         } catch (IOException e) {
+            this.console.append("Error al recorrer la carpeta: " + driversPath.toAbsolutePath());
             e.printStackTrace();
         }
     }
