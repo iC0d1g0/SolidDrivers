@@ -1,6 +1,7 @@
 
 package com.solidtype.soliddrivers.logicaI_instalador;
 
+import static com.solidtype.soliddrivers.logicaI_instalador.BatchFileCreator.checkAndCreateBatchFile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,10 +43,12 @@ public class DriverInstallerThread implements Runnable {
     }
      public void installDriver(Path infFilePath) {
         System.out.println("Instalando driver: " + infFilePath.toAbsolutePath());
+            
+            String rutaBatch = checkAndCreateBatchFile();
 
         try {
             // Ejecuta el comando pnputil
-            ProcessBuilder processBuilder = new ProcessBuilder("pnputil", "/add-driver", infFilePath.toString(), "/install");
+            ProcessBuilder processBuilder = new ProcessBuilder(rutaBatch, infFilePath.toAbsolutePath().toString());
             processBuilder.redirectErrorStream(true); // Combina la salida de error con la salida estándar
             Process process = processBuilder.start();
            

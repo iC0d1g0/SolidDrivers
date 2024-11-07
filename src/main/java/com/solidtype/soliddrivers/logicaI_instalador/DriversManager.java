@@ -20,9 +20,9 @@ import java.util.stream.Stream;
 public class DriversManager {
     
     
-    private static final int DRIVERS_INSTALLERS =3;
+    private static final int DRIVERS_INSTALLERS =1;
     private TextArea console;
-    private Queue<Drivers> cola = new LinkedList<>();
+    private Queue<Drivers> cola = new LinkedList<>(); 
     private final String folderName;
     Object lock = new Object();
     private Thread[] installers;
