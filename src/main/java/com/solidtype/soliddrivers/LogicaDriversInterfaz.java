@@ -1,6 +1,7 @@
 
 package com.solidtype.soliddrivers;
 
+import com.solidtype.soliddrivers.logicaI_instalador.CardReaderInstaller;
 import java.awt.TextArea;
 import java.awt.TextField;
 import java.io.File;
@@ -8,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JProgressBar;
 /**
  *
@@ -57,12 +60,19 @@ public class LogicaDriversInterfaz implements LogicaDrivers {
 
     @Override
     public void customDrivers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      String carpeta = helper.seleccionarCarpeta();
+      if(carpeta != null){
+          this.console.append("Instalando drivers de: " + carpeta);
+          helper.installCustomDrivers(carpeta);
+      }else{
+          this.console.append("Favor seleconar algun archivo..");
+          
+      }
     }
 
     @Override
     public void manualDriver(String path) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
         
     private  Map<String, String> getLocalInfo(){
@@ -109,9 +119,25 @@ public class LogicaDriversInterfaz implements LogicaDrivers {
             e.printStackTrace();
             return "Error obteniendo información";
         }
-        return result.toString().trim(); // Remover espacios y saltos de línea finales
+        return result.toString().trim(); // Remover espacios y saltos de línssea finales
     }
- 
-   
+
+    @Override
+    public void installarCardReader() {
+     
+        try {
+         this.console.append("\n Preparando instalacion de CardReader\n");
+        this.console.append("\n por favor espere ....\n");
+        this.console.append("\n Espere terminar el asistente.. luego finalize");
+        Thread.sleep(1000);
+        CardReaderInstaller ca = new CardReaderInstaller ();
+        this.console.append("\nEstado: "+ ca.checkAndCreateBatchFile() + "\n");
+        this.console.append("Exito...\n");
+        
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LogicaDriversInterfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }
 }
 

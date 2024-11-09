@@ -8,10 +8,14 @@ import java.awt.TextArea;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
+import javax.swing.filechooser.FileSystemView;
 
 
 
@@ -23,7 +27,7 @@ public class Funciones_windows {
           this.progress = progress;
         this.console = console;
      }
-    
+ 
     // Método para iniciar la instalación de drivers desde la carpeta Binaries
     public void installDrivers(String folderName) {
       
@@ -33,60 +37,25 @@ public class Funciones_windows {
       
         new ProgressUpdater(manager).execute();
     }
+    
+    public void installCustomDrivers(String folderName){
+        DriversManager manager = new DriversManager(folderName, this.console);
+        System.out.println("Voy a iniciar la insalacion de drivers");
+        manager.installCustomDriver(folderName);
+      
+        new ProgressUpdater(manager).execute();
+        
+    }
     public void println(String texto){
          this.console.append(texto + "\n");
     }
     public void copyDriverStore(String folderName) {
-        // Ruta de la carpeta FileRepository
-       
-        println("Extrayendo drivers... por favor espere... ");
-        
-        String sourcePath = System.getenv("windir") + "\\System32\\DriverStore\\FileRepository";
-            // Crear la carpeta "Binaries" en el directorio de ejecución
-        println("Extrayendo desde: "+sourcePath);
-        String binariesPath = System.getProperty("user.dir") + File.separator + "Binaries";
-        File binariesFolder = new File(binariesPath);
-        if (!binariesFolder.exists()) {
-            binariesFolder.mkdirs();
-            println("Creando nueva carpeta..");
-        }
+     
+            DriversManager manager = new DriversManager(folderName, this.console);
+            System.out.println("Voy a iniciar la insalacion de drivers");
+            manager.extraer();
 
-        // Crear la carpeta de destino dentro de "Binaries"
-        String destPath = binariesPath + File.separator + folderName;
-        File destFolder = new File(destPath);
-        if (!destFolder.exists()) {
-            destFolder.mkdirs();
-            println("Configurando destino :"+ destFolder);
-                   // Copiar el contenido de FileRepository a la carpeta de destino
-        }
-        
-        try {
-            Files.walk(Paths.get(sourcePath))
-                 .forEach(source -> {
-                     
-                  Path destination = Paths.get(destPath, source.toString().substring(sourcePath.length()));
-                  println("Copiando: "+source.toString());
-         try {
-             // Si es un directorio, créalo, si es un archivo, cópialo
-             if (Files.isDirectory(source)) {
-                 Files.createDirectories(destination); // Crear directorio si no existe
-             } else {
-                 Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
-             }
-         } catch (IOException e) {
-           
-             println("Error copiando archivo o creando directorio: " + source + " -> " + destination);
-             println(e.getMessage());
-             
-         }
-         });
-            println("");
-            println("");
-            println("Archivos copiados exitosamente a: " + destPath);
-        } catch (IOException e) {
-            println("Error al acceder o copiar los archivos de la carpeta FileRepository. " + e.getMessage());
-           
-             }
+            new ProgressUpdater(manager).execute();
          }
 
  
@@ -102,6 +71,7 @@ public class Funciones_windows {
 
         @Override
         protected Void doInBackground() {
+             Instant inicio = Instant.now();
             while (!manager.isQueueEmpty()) {
                 int processedDrivers = totalDrivers - manager.getQueueSize();
                 int progress = (int) ((processedDrivers / (double) totalDrivers) * 100);
@@ -113,6 +83,9 @@ public class Funciones_windows {
                     break;
                 }
             }
+            Instant fin = Instant.now();
+            long duracionMinutos = Duration.between(inicio, fin).toSeconds();
+            println("\nDuracion : " +duracionMinutos+ " Segundos\n");
             publish(100); // Al finalizar, asegurarse de que la barra de progreso esté al 100%
             return null;
         }
@@ -126,6 +99,25 @@ public class Funciones_windows {
         @Override
         protected void done() {
             JOptionPane.showMessageDialog(null, "Instalación completada.");
+        }
+    }
+    
+    public  String seleccionarCarpeta() {
+        // Crear un JFileChooser con el modo de selección de directorios
+        JFileChooser selectorCarpeta = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        selectorCarpeta.setDialogTitle("Selecciona una carpeta");
+        selectorCarpeta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        // Mostrar el diálogo y capturar la selección
+        int resultado = selectorCarpeta.showOpenDialog(null);
+
+        // Verificar si el usuario seleccionó una carpeta
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File carpetaSeleccionada = selectorCarpeta.getSelectedFile();
+            return carpetaSeleccionada.getAbsolutePath(); // Devolver la ruta de la carpeta seleccionada
+        } else {
+            System.out.println("No se seleccionó ninguna carpeta.");
+            return null;
         }
     }
 
