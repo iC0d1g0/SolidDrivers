@@ -4,6 +4,8 @@
  */
 package com.solidtype.soliddrivers;
 
+import com.solidtype.soliddrivers.logicaI_instalador.CardReaderInstaller;
+
 /**
  *
  * @author adder
@@ -34,12 +36,11 @@ public class UserScreen extends javax.swing.JFrame {
 
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btInfo = new javax.swing.JButton();
+        btn_extraer = new javax.swing.JButton();
+        btn_instalar = new javax.swing.JButton();
+        btn_custom = new javax.swing.JButton();
+        btn_cardReader = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -53,32 +54,65 @@ public class UserScreen extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 255));
 
-        jButton1.setText("Info");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btInfo.setText("Info");
+        btInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btInfoMouseEntered(evt);
+            }
+        });
+        btInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btInfoActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Extraer Drivers");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_extraer.setText("Extraer Drivers");
+        btn_extraer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_extraerMouseEntered(evt);
+            }
+        });
+        btn_extraer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_extraerActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Instalar Todo");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btn_instalar.setText("Instalar Todo");
+        btn_instalar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_instalarMouseEntered(evt);
+            }
+        });
+        btn_instalar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btn_instalarActionPerformed(evt);
             }
         });
 
-        jButton4.setText("...");
+        btn_custom.setText("Custom Drivers");
+        btn_custom.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_customMouseEntered(evt);
+            }
+        });
+        btn_custom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_customActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Custom Drivers");
-
-        jButton6.setText("Instalar CardDriver");
+        btn_cardReader.setText("Instalar CardDriver");
+        btn_cardReader.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_cardReaderMouseEntered(evt);
+            }
+        });
+        btn_cardReader.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cardReaderActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,29 +121,26 @@ public class UserScreen extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_instalar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_custom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_extraer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_cardReader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(113, 113, 113)
-                .addComponent(jButton1)
+                .addComponent(btInfo)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btn_extraer)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btn_instalar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton6)
+                .addComponent(btn_cardReader)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
-                .addGap(18, 18, 18)
-                .addComponent(jButton4)
+                .addComponent(btn_custom)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -121,6 +152,7 @@ public class UserScreen extends javax.swing.JFrame {
 
         consola.setBackground(new java.awt.Color(102, 102, 102));
         consola.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        consola.setEditable(false);
         consola.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         consola.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -156,6 +188,13 @@ public class UserScreen extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jProgressBar1.setBackground(new java.awt.Color(204, 204, 255));
+        jProgressBar1.setForeground(new java.awt.Color(0, 102, 102));
+        jProgressBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jProgressBar1.setFocusCycleRoot(true);
+        jProgressBar1.setInheritsPopupMenu(true);
+        jProgressBar1.setStringPainted(true);
 
         jLabel2.setText("SolidDrives by SolidType S.R.L.");
 
@@ -199,7 +238,7 @@ public class UserScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInfoActionPerformed
         this.consola.append("Leyendo informaciones" + "\n");
 
         this.consola.append("Modelo: " + this.driver.getInfo().getModelo() + "\n");
@@ -228,21 +267,49 @@ public class UserScreen extends javax.swing.JFrame {
                 + this.driver.getInfo().getProcesador()+ "\n"
         );
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btInfoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btn_extraerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_extraerActionPerformed
         // TODO add your handling code here:
         driver.extraerDrivers();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btn_extraerActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btn_instalarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_instalarActionPerformed
         driver.instalarDrivers();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btn_instalarActionPerformed
+
+    private void btn_cardReaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cardReaderActionPerformed
+           driver.installarCardReader();
+                
+    }//GEN-LAST:event_btn_cardReaderActionPerformed
+
+    private void btn_customActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_customActionPerformed
+         driver.customDrivers();
+    }//GEN-LAST:event_btn_customActionPerformed
+
+    private void btInfoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btInfoMouseEntered
+        this.btInfo.setToolTipText("Leer informaciones");
+    }//GEN-LAST:event_btInfoMouseEntered
+
+    private void btn_extraerMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_extraerMouseEntered
+         this.btn_extraer.setToolTipText("Extaer todos los drivers de esta maquina");
+    }//GEN-LAST:event_btn_extraerMouseEntered
+
+    private void btn_instalarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_instalarMouseEntered
+         this.btn_instalar.setToolTipText("Instalar drivers existentes, o extraido");
+    }//GEN-LAST:event_btn_instalarMouseEntered
+
+    private void btn_cardReaderMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cardReaderMouseEntered
+        this.btn_cardReader.setToolTipText("Instalar lector de targetas: sdcard, sdcard reader ...");
+    }//GEN-LAST:event_btn_cardReaderMouseEntered
+
+    private void btn_customMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_customMouseEntered
+       this.btn_custom.setToolTipText("Instalar drivers personalizados o de terceros");
+    }//GEN-LAST:event_btn_customMouseEntered
 
     /**
      * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+     */   public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -264,24 +331,18 @@ public class UserScreen extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(UserScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+     }
+ 
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UserScreen().setVisible(true);
-            }
-        });
-    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btInfo;
+    private javax.swing.JButton btn_cardReader;
+    private javax.swing.JButton btn_custom;
+    private javax.swing.JButton btn_extraer;
+    private javax.swing.JButton btn_instalar;
     public java.awt.TextArea consola;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
