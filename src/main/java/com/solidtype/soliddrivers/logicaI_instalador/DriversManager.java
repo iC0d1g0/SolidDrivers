@@ -49,6 +49,9 @@ public class DriversManager {
     public void setPrintText(String texto){
          this.console.append( texto + "\n");
     }
+    public void clearText(){
+         this.console.setText("");
+    }
     public void agregarDrivers(Drivers driver){
         synchronized(lock){
             cola.offer(driver);

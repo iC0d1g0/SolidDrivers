@@ -30,10 +30,12 @@ public class DriverInstallerThread implements Runnable {
                 System.out.println("EL QUEUE DEBE DE ESTAR VACIO++++++++++++++++++++++");
                 return;
             }
+            this.manager.clearText();
             this.manager.setPrintText("ruta: " + driver.getDriver());
             installDriver(driver.getDriver());
             //Thread.sleep(1000);
             this.manager.setPrintText("Estado : Iniciando....");
+            
         }
             
         } catch (InterruptedException ex) {
@@ -48,6 +50,7 @@ public class DriverInstallerThread implements Runnable {
         try {
             // Ejecuta el comando pnputil
             ProcessBuilder processBuilder = new ProcessBuilder(rutaBatch, infFilePath.toAbsolutePath().toString());
+            System.out.println("archivos : " + infFilePath.toAbsolutePath().toString());
             processBuilder.redirectErrorStream(true); // Combina la salida de error con la salida estándar
             Process process = processBuilder.start();
            
@@ -59,8 +62,12 @@ public class DriverInstallerThread implements Runnable {
                 }
             }
             
-            process.waitFor(20, TimeUnit.MINUTES);
-            this.manager.setPrintText("Instalacion : Completa...\n");
+          //  Thread.sleep(500);      
+            process.waitFor(5, TimeUnit.MINUTES);
+            this.manager.setPrintText("Instalacion : Completa...\n");    
+            System.out.println("");
+                         
+            
 
         } catch (IOException | InterruptedException e) {
             this.manager.setPrintText("Error al ejecutar pnputil para el archivo: " + infFilePath.getFileName());
