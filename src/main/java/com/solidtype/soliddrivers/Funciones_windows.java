@@ -6,8 +6,6 @@ package com.solidtype.soliddrivers;
 import com.solidtype.soliddrivers.logicaI_instalador.DriversManager;
 import java.awt.TextArea;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -21,8 +19,8 @@ import javax.swing.filechooser.FileSystemView;
 
 public class Funciones_windows {
   
-     private JProgressBar progress;
-     private TextArea console;
+     private final JProgressBar progress;
+     private final TextArea console;
      public Funciones_windows (JProgressBar progress, TextArea console){
           this.progress = progress;
         this.console = console;
