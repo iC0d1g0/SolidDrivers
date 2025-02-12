@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.solidtype.soliddrivers;
 import com.solidtype.soliddrivers.logicaI_instalador.DriversManager;
 import java.awt.TextArea;
